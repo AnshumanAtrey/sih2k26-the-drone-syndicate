@@ -1,0 +1,73 @@
+{
+  "total": 229,
+  "scraped_at": "2026-08-28",
+  "source": "https://www.sih.gov.in/sih2026PS",
+  "by_category": {
+    "Software": 175,
+    "Hardware": 54
+  },
+  "by_theme": {
+    "Smart Automation": 55,
+    "Blockchain & Cybersecurity": 31,
+    "Disaster Management": 25,
+    "Agriculture, FoodTech & Rural Development": 22,
+    "MedTech / BioTech / HealthTech": 18,
+    "Miscellaneous": 15,
+    "Robotics and Drones": 12,
+    "Smart Education": 11,
+    "Space Technology": 9,
+    "Transportation & Logistics": 7,
+    "Clean & Green Technology": 7,
+    "Smart Vehicles": 6,
+    "Heritage & Culture": 3,
+    "Fitness & Sports": 2,
+    "Renewable / Sustainable Energy": 2,
+    "Travel & Tourism": 2,
+    "Toys & Games": 2
+  },
+  "by_organization": {
+    "AICTE": 34,
+    "Ministry of Earth Sciences (MoES)": 30,
+    "National Technical Research Organisation (NTRO)": 23,
+    "Indian Space Research Organisation(ISRO)": 11,
+    "Ministry of Home Affairs": 11,
+    "Ministry of Rural Development": 10,
+    "Ministry of Consumer Affairs, Food & Public Distribution": 10,
+    "Government Of Maharashtra": 9,
+    "Ministry of Social Justice and Empowerment (MoSJE)": 8,
+    "DRDO": 7,
+    "Ministry of Development of North Eastern Region (MDoNER)": 5,
+    "Governmcnt of Jharkhand": 5,
+    "Ministry of Ayush": 5,
+    "Autodesk": 5,
+    "Bharat Electronics Limited": 5,
+    "Egreen Quanta": 5,
+    "Qualcomm Inc": 5,
+    "Ministry of Steel": 4,
+    "MoSPI": 4,
+    "Oil India Limited": 4,
+    "Ministry of MSME": 3,
+    "Ministry of Coal": 3,
+    "Ministry of Railways": 3,
+    "Ministry of Cooperation": 3,
+    "All India Council for Technical Education (AICTE)": 3,
+    "Ministry of Fisheries, Animal Husbandry & Dairying": 3,
+    "Mangalore Refinery and Petrochemicals Limited (MRPL)": 3,
+    "MathWorks": 2,
+    "Ministry of Petroleum & Natural Gas": 2,
+    "Ministry of defence (MoD)": 2,
+    "Ministry of Defence (MoD)": 1,
+    "Ministry of Mines (MoM)": 1
+  },
+  "deadlines": {
+    "20 September 2026": 229
+  },
+  "with_dataset_link": 44,
+  "with_youtube": 5,
+  "with_contact": 0,
+  "description_chars": {
+    "min": 78,
+    "max": 11955,
+    "mean": 2558
+  }
+}

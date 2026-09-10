@@ -1,0 +1,142 @@
+{
+  "verified_on": "2026-08-28",
+  "source": "https://www.sih.gov.in/sih2026PS",
+  "source_is_authoritative": true,
+  "browser_automation_needed": false,
+  "browser_automation_note": "sih2026PS is one server-rendered page: every statement's detail modal is already in the static HTML, so a plain HTTP GET returns all fields. Playwright/Puppeteer would add a browser for nothing.",
+  "total_ps": 229,
+  "markdown_files": 229,
+  "by_category": {
+    "Software": 175,
+    "Hardware": 54
+  },
+  "themes": 17,
+  "new_ps": [
+    "SIH26227",
+    "SIH26228",
+    "SIH26229"
+  ],
+  "snapshot_check": {
+    "snapshot": "sih2026PS-raw-2026-08-28.html",
+    "ps_on_page": 229,
+    "ps_in_our_data": 229,
+    "only_in_our_data": [],
+    "mismatches": []
+  },
+  "public_datasets": {
+    "vedantchalke36/sih-2026-problem-statements": {
+      "records": 226,
+      "missing_vs_ours": [
+        "SIH26227",
+        "SIH26228",
+        "SIH26229"
+      ],
+      "extra_vs_ours": [],
+      "shared": 226,
+      "theme_disagreements": 149,
+      "theme_disagreement_pct": 65.9
+    },
+    "NoBugNinja/Smart-India-Hackathon-SIH-2026-Problem-Statements": {
+      "records": 226,
+      "missing_vs_ours": [
+        "SIH26227",
+        "SIH26228",
+        "SIH26229"
+      ],
+      "extra_vs_ours": [],
+      "shared": 226,
+      "theme_disagreements": 149,
+      "theme_disagreement_pct": 65.9
+    },
+    "Sourav112-droid/sih-2026-problem-statements": {
+      "records": 226,
+      "missing_vs_ours": [
+        "SIH26227",
+        "SIH26228",
+        "SIH26229"
+      ],
+      "extra_vs_ours": [],
+      "shared": 226,
+      "theme_disagreements": 149,
+      "theme_disagreement_pct": 65.9
+    },
+    "sea-deep/sih2026-problem-statements": {
+      "records": 226,
+      "missing_vs_ours": [
+        "SIH26227",
+        "SIH26228",
+        "SIH26229"
+      ],
+      "extra_vs_ours": [],
+      "shared": 226,
+      "theme_disagreements": 149,
+      "theme_disagreement_pct": 65.9
+    },
+    "Rugved-dev18/SIH-2026-official-Software-Problem-Statements": {
+      "records": 172,
+      "missing_vs_ours": [
+        "SIH26004",
+        "SIH26005",
+        "SIH26007",
+        "SIH26008",
+        "SIH26010",
+        "SIH26020",
+        "SIH26022",
+        "SIH26025",
+        "SIH26026",
+        "SIH26029",
+        "SIH26030",
+        "SIH26039",
+        "SIH26040",
+        "SIH26048",
+        "SIH26049",
+        "SIH26050",
+        "SIH26052",
+        "SIH26058",
+        "SIH26064",
+        "SIH26065",
+        "SIH26087",
+        "SIH26088",
+        "SIH26096",
+        "SIH26098",
+        "SIH26109",
+        "SIH26110",
+        "SIH26112",
+        "SIH26113",
+        "SIH26118",
+        "SIH26144",
+        "SIH26172",
+        "SIH26177",
+        "SIH26178",
+        "SIH26179",
+        "SIH26180",
+        "SIH26181",
+        "SIH26185",
+        "SIH26210",
+        "SIH26211",
+        "SIH26212",
+        "SIH26213",
+        "SIH26214",
+        "SIH26215",
+        "SIH26216",
+        "SIH26217",
+        "SIH26218",
+        "SIH26219",
+        "SIH26220",
+        "SIH26221",
+        "SIH26222",
+        "SIH26223",
+        "SIH26224",
+        "SIH26225",
+        "SIH26226",
+        "SIH26227",
+        "SIH26228",
+        "SIH26229"
+      ],
+      "extra_vs_ours": [],
+      "shared": 172,
+      "theme_disagreements": 109,
+      "theme_disagreement_pct": 63.4
+    }
+  }
+}
