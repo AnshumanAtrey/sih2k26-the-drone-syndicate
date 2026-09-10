@@ -4,7 +4,14 @@
 Template sub-bullets, verbatim: *technologies to be used (programming languages, frameworks,
 hardware) · methodology and process for implementation (flow charts / images / working prototype)*
 
-**Prompts: 3.** `P3.1` the pixel ladder · `P3.2` what reaches a buried person · `P3.3` the two airframes.
+**Prompts: 3.** `P3.1` the pixel ladder · `P3.2` what reaches a buried person · `P3.3` two airframes — **all three to run**.
+
+> **Prompt text is not in this file.** The canonical, copy-paste-ready prompts live in
+> [`../PROMPTS-TO-RUN.md`](../PROMPTS-TO-RUN.md), rewritten 11 Sep 2026 for the **white** official
+> template with the style prefix already merged in. What stays here is the *argument* - why each
+> visual exists, what it must land, and what to reject it for. Any prompt fence still shown below is
+> the superseded dark v1, kept only for the Grand Finale deck where no template is imposed.
+
 
 ---
 
@@ -45,7 +52,9 @@ and a box diagram, which is what most decks do and which proves nothing. Instead
 
 ## P3.1 — Why 30 metres: the pixel ladder `[DATA-EXACT — editorial infographic]`
 
-Paste the STYLE.md global prefix first.
+**-> Use entry 2 in [`../PROMPTS-TO-RUN.md`](../PROMPTS-TO-RUN.md) - "The pixel ladder", white/tier-2, prefix pre-merged.**
+
+*The fence below is the superseded **dark v1** of this prompt. Finale deck only - do not run it for the submission.*
 
 ```
 A full-width 16:9 editorial infographic on deep navy, laid out as three large panels in a horizontal row, separated by generous negative space and no dividing lines.
@@ -92,7 +101,9 @@ before accepting the image; this is a `[DATA-EXACT]` prompt.*
 > and RGB are one vote in two coats; both die behind concrete. **Independence is what buys
 > confidence**, and RF, chemical, radar and acoustic streams are independent of line of sight.
 
-Paste the STYLE.md global prefix first.
+**-> Use entry 3 in [`../PROMPTS-TO-RUN.md`](../PROMPTS-TO-RUN.md) - "What reaches a buried person", white/tier-2, prefix pre-merged.**
+
+*The fence below is the superseded **dark v1** of this prompt. Finale deck only - do not run it for the submission.*
 
 ```
 A 16:9 technical illustration on deep navy, split into a LEFT REGION of about 65% width and a RIGHT REGION of about 30%, separated by generous negative space.
@@ -188,6 +199,11 @@ the citation.*
 ---
 
 ## P3.3 — Two airframes `[isometric technical cutaway, real part numbers]`
+
+**-> Use entry 4 in [`../PROMPTS-TO-RUN.md`](../PROMPTS-TO-RUN.md) - "Two airframes", white/tier-2, prefix pre-merged.** It also fixes the 8-arm error in the current render.
+
+*The fence below is the superseded **dark v1** of this prompt. Finale deck only - do not run it for the submission.*
+
 
 ```
 An isometric technical illustration on deep navy, 16:9, showing two multirotor aircraft side by side at correct relative scale — a large hexacopter on the left occupying about 60% of the frame, a noticeably smaller quadcopter on the right.

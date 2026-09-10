@@ -4,7 +4,14 @@
 Template sub-bullets, verbatim: *detailed explanation of the proposed solution · how it addresses the
 problem · innovation and uniqueness of the solution*
 
-**Prompts: 3.** `P2.1` the failure we are fixing · `P2.2` the system in operation · `P2.3` the SACHET loop.
+**Prompts: 3.** `P2.1` the frog *(done, dark)* · `P2.2` the hero *(done, dark)* · `P2.3` the SACHET loop *(to run)*.
+
+> **Prompt text is not in this file.** The canonical, copy-paste-ready prompts live in
+> [`../PROMPTS-TO-RUN.md`](../PROMPTS-TO-RUN.md), rewritten 11 Sep 2026 for the **white** official
+> template with the style prefix already merged in. What stays here is the *argument* - why each
+> visual exists, what it must land, and what to reject it for. Any prompt fence still shown below is
+> the superseded dark v1, kept only for the Grand Finale deck where no template is imposed.
+
 
 ---
 
@@ -56,7 +63,9 @@ on-device with no network at all.
 
 ## P2.1 — The frog `[cinematic-diagrammatic]`
 
-Paste the STYLE.md global prefix first.
+Paste the **Tier-1 prefix** from `STYLE.md` first - this is a dark, photographic asset that stays dark.
+
+**Already rendered: `images/P2.1-frog.png` - no action.**
 
 ```
 A single 16:9 frame split by one thin vertical amber rule into two unequal panels, left panel 60% wide.
@@ -86,6 +95,11 @@ documented failure. If only one prompt gets three regeneration attempts, it is t
 ---
 
 ## P2.2 — Kestrel in operation `[cinematic hero, HUD-labelled]`
+
+Paste the **Tier-1 prefix** from `STYLE.md` first - this is a dark, photographic asset that stays dark.
+
+**Already rendered: `images/P2.2-hero.png` - no action.**
+
 
 ```
 Wide cinematic aerial three-quarter view at blue-hour dusk over a flood-and-landslide-hit Indian hill town: collapsed buildings, a mud-choked river, a broken road. In the near foreground on the intact road sits an orange-and-white NDRF response truck with its rear doors open, a lit interior, and a folding launch rail; two operators stand at a rugged tablet on a tripod.
@@ -125,7 +139,9 @@ does — six S500 scouts weigh ~7.2 kg against a 3 kg lift budget. See `DATA.md`
 > airframes cutaway. I'd resist that one — the airframes image is what carries the Qualcomm silicon
 > and the recycled phone, and a Qualcomm panel should see their own board on the aircraft.
 
-Paste the STYLE.md global prefix first.
+**-> Use entry 1 in [`../PROMPTS-TO-RUN.md`](../PROMPTS-TO-RUN.md) - "The SACHET loop", white/tier-2, prefix pre-merged.**
+
+*The fence below is the superseded **dark v1** of this prompt. Finale deck only - do not run it for the submission.*
 
 ```
 A 16:9 technical illustration on deep navy, composed as four numbered stages reading left to right across the frame, connected by one continuous cyan arrow that curves from stage to stage and finally loops back underneath the whole sequence to rejoin the first stage, so the process reads as a closed cycle.

@@ -4,7 +4,14 @@
 Template sub-bullets, verbatim: *potential impact on the target audience · benefits of the solution
 (social, economic, environmental, etc.)*
 
-**Prompts: 3.** `P5.1` the survival clock · `P5.2` this monsoon · `P5.3` what the commander sees.
+**Prompts: 3.** `P5.1` the survival wall · `P5.2` the uncounted · `P5.3` what the commander sees.
+
+> **Prompt text is not in this file.** The canonical, copy-paste-ready prompts live in
+> [`../PROMPTS-TO-RUN.md`](../PROMPTS-TO-RUN.md), rewritten 11 Sep 2026 for the **white** official
+> template with the style prefix already merged in. What stays here is the *argument* - why each
+> visual exists, what it must land, and what to reject it for. Any prompt fence still shown below is
+> the superseded dark v1, kept only for the Grand Finale deck where no template is imposed.
+
 
 ---
 
@@ -57,7 +64,9 @@ at full width, and each one is legible at 25% zoom because it is a row of counta
 > horizontal, so time reads left to right the way every reader already expects, all text straight, and
 > the quantity expressed as *people* rather than as percent. You count the survivors going dark.
 
-Paste the STYLE.md global prefix first.
+**-> Use entry 8 in [`../PROMPTS-TO-RUN.md`](../PROMPTS-TO-RUN.md) - "The survival wall", white/tier-2, prefix pre-merged.**
+
+*The fence below is the superseded **dark v1** of this prompt. Finale deck only - do not run it for the submission.*
 
 ```
 A 16:9 editorial infographic on deep navy, laid out as four large square blocks in a single horizontal row, evenly spaced with generous negative space between them, all sitting on one shared thin slate-grey baseline.
@@ -120,7 +129,9 @@ is the second thing this system fixes."* See `DATA.md` §6g.
 > themselves, and it is *causal to the product*: **the counting gap and the search gap are the same
 > gap.** The current-monsoon scale figures survive as native text in the benefits strip below.
 
-Paste the STYLE.md global prefix first.
+**-> Use entry 9 in [`../PROMPTS-TO-RUN.md`](../PROMPTS-TO-RUN.md) - "The uncounted", white/tier-2, prefix pre-merged.**
+
+*The fence below is the superseded **dark v1** of this prompt. Finale deck only - do not run it for the submission.*
 
 ```
 A 16:9 editorial infographic on deep navy, laid out as two horizontal bands stacked one above the other with generous space between them, both bands sharing the same left margin and the same icon scale.
@@ -177,6 +188,11 @@ what we sell.** Full reasoning and sources in `DATA.md` §2h.
 ---
 
 ## P5.3 — What the commander sees `[high-fidelity UI mockup]`
+
+Paste the **Tier-1 prefix** from `STYLE.md` first - a mission-control UI is a screen capture and correctly stays dark.
+
+**Already rendered: `images/P5.3-dashboard.png` - no action.**
+
 
 ```
 A high-fidelity dark-mode mission-control dashboard filling a 16:9 widescreen frame, designed to the standard of a premium modern web application — real interface, not a stylised impression of one.

@@ -12,7 +12,7 @@ costs file size, and buys nothing — the judge has not yet been given a reason 
 beautiful drone. The reason is on Slide 2. Keep this page quiet, typographic and fast to read, and
 spend the visual budget on the four content pages that are actually scored.
 
-Ground: flat `#0B1220`. One 2 px cyan rule under the wordmark. Nothing else.
+Ground: the template's own **white**. One 2 px teal `#0E7490` rule under the wordmark. Nothing else.
 
 ---
 
@@ -48,10 +48,10 @@ Ground: flat `#0B1220`. One 2 px cyan rule under the wordmark. Nothing else.
 
 ## Typography
 
-- `KESTREL` — Space Grotesk Bold, 72 pt, `#E2E8F0`, letter-spacing +0.08em
-- Tagline — Inter Medium, 20 pt, `#94A3B8`, two lines maximum
-- Field labels — Inter Medium 11 pt `#94A3B8` / values Inter Semibold 15 pt `#E2E8F0`
-- "SMART INDIA HACKATHON 2026" — Inter Bold 12 pt `#22D3EE`, top-right, tracked wide
+- `KESTREL` — Space Grotesk Bold, 72 pt, ink `#0B1220`, letter-spacing +0.08em
+- Tagline — Inter Medium, 20 pt, slate `#475569`, two lines maximum
+- Field labels — Inter Medium 11 pt slate `#475569` / values Inter Semibold 15 pt ink `#0B1220`
+- The official SIH 2026 logo (`images/_sih2026-official-logo.png`) top-right, as shipped
 
 ## Naming note
 

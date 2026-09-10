@@ -4,7 +4,14 @@
 Template sub-bullets, verbatim: *analysis of the feasibility of the idea · potential challenges and
 risks · strategies for overcoming these challenges*
 
-**Prompts: 3.** `P4.1` the cost ladder · `P4.2` what happens when it fails · `P4.3` the flight plan.
+**Prompts: 3.** `P4.1` the cost ladder · `P4.2` when it fails · `P4.3` whose asset, whose money.
+
+> **Prompt text is not in this file.** The canonical, copy-paste-ready prompts live in
+> [`../PROMPTS-TO-RUN.md`](../PROMPTS-TO-RUN.md), rewritten 11 Sep 2026 for the **white** official
+> template with the style prefix already merged in. What stays here is the *argument* - why each
+> visual exists, what it must land, and what to reject it for. Any prompt fence still shown below is
+> the superseded dark v1, kept only for the Grand Finale deck where no template is imposed.
+
 
 ---
 
@@ -59,7 +66,9 @@ items.*
 > surveyed, which is the number `DATA.md` §6c actually derives — and demotes the "86 minutes" line to
 > a separate, explicitly-labelled meter strip where it cannot be misread as a height comparison.
 
-Paste the STYLE.md global prefix first.
+**-> Use entry 5 in [`../PROMPTS-TO-RUN.md`](../PROMPTS-TO-RUN.md) - "The cost ladder", white/tier-2, prefix pre-merged.**
+
+*The fence below is the superseded **dark v1** of this prompt. Finale deck only - do not run it for the submission.*
 
 ```
 A 16:9 editorial infographic on deep navy, split into two clearly separated regions by generous negative space: a LEFT REGION occupying about 55% of the width, and a RIGHT REGION occupying about 40%, with a wide dark gutter between them.
@@ -102,6 +111,11 @@ Numbers check against `DATA.md` §6c and §7 — `[DATA-EXACT]`.*
 
 ## P4.2 — When it fails `[isometric ladder, four rungs]`
 
+**-> Use entry 6 in [`../PROMPTS-TO-RUN.md`](../PROMPTS-TO-RUN.md) - "When it fails", white/tier-2, prefix pre-merged.**
+
+*The fence below is the superseded **dark v1** of this prompt. Finale deck only - do not run it for the submission.*
+
+
 ```
 An isometric technical illustration on deep navy, 16:9, showing four scenes arranged as descending steps from upper-left down to lower-right, like four rungs of a staircase, each rung a small self-contained diorama on its own floating platform. A single thick arrow runs down the whole staircase, starting bright cyan at the top and fading through pale cyan to amber at the bottom — but never breaking.
 
@@ -139,7 +153,9 @@ ends the mission.*
 > The already-rendered flight-path roadmap is a good asset; keep it for the finale deck, where the
 > slide budget is not six pages. Its prompt is archived at the bottom of this file.
 
-Paste the STYLE.md global prefix first.
+**-> Use entry 7 in [`../PROMPTS-TO-RUN.md`](../PROMPTS-TO-RUN.md) - "Whose asset, whose money", white/tier-2, prefix pre-merged.**
+
+*The fence below is the superseded **dark v1** of this prompt. Finale deck only - do not run it for the submission.*
 
 ```
 A 16:9 editorial infographic on deep navy, divided into two clearly separated halves by generous negative space.
