@@ -18,7 +18,8 @@ kestrel-ppt/
 ├── README.md   ← you are here: deck map, workflow, what changed
 ├── DATA.md     ← every number, sourced and tagged. Single source of truth
 ├── STYLE.md    ← two tiers, both palettes, prompt grammar
-├── PROMPTS-TO-RUN.md  ← ★ the 9 outstanding prompts, copy-paste ready, prefix pre-merged
+├── PROMPTS-TO-RUN.md  ← round 1: the 9 slide-committed prompts, copy-paste ready
+├── PROMPTS-ROUND-2.md ← round 2: 9 exploratory prompts, nothing slide-committed yet
 ├── scripts/whiten.py  ← snaps a render's near-white to pure #FFFFFF and trims the margin
 ├── images/     ← 12 renders + the official SIH 2026 logo
 └── slides/
