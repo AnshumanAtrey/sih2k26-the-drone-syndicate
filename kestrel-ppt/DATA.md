@@ -933,3 +933,65 @@ mothership still has going for it.
 - [ ] Confirm whether Wi-Fi Aware / sidelink D2D is exposed on QRB2210 and QCS6490 in Qualcomm Linux.
 - [ ] Decide the architecture from the round-3 renders, then rewrite `slides/` §Kestrel accordingly —
       §0 corrections 1 and 3, and every "mothership" mention, depend on the outcome.
+
+---
+---
+
+# ADDENDUM 4 — 11 Sep 2026 · ARCHITECTURE DECIDED
+
+**Option B. The truck is the base. The flying mothership is deleted.**
+
+Decided against `images/round23/R3-1-bakeoff.png`, which our own criteria answer: the flying
+mothership fails *no single point of failure*, *compute fully used* and *works inside buildings*.
+Option B passes all four, is what **CERBERUS did to win the DARPA Subterranean Challenge**, and is
+buildable by the December finale. Option D (swarm-as-computer) scores the same but is materially
+harder to explain on a six-page deck read cold — that cost is real and it is why D is the *roadmap*,
+not the submission.
+
+## 18a. What the system is now
+
+| Element | Role |
+|---|---|
+| **Base station, in the NDRF vehicle** | Qualcomm RB3 Gen 2. Mains power, no weight limit, real cooling — so it runs the fusion stack and the language model without an endurance budget. Heavy multi-robot map optimisation happens here, exactly as CERBERUS did it |
+| **Relay drone ×1** | Cheap. Holds line-of-sight aloft. Carries no intelligence, so losing it costs the link for seconds, not the mission |
+| **Scouts ×6** | Each an **Arduino UNO Q** — Qualcomm Dragonwing QRB2210 + real-time STM32, **Wi-Fi and Bluetooth on board**. Detection runs here. Two of the six carry FLIR Lepton 3.5 |
+| **Breadcrumb pods ×6** | Dropped from the six-servo rack. Extend the mesh *inside* structures, where a relay at altitude cannot reach. Two carry acoustic + CO2 |
+
+**Every compute node is now Qualcomm silicon**, and the scout's own radios do the passive phone-RF
+sensing (§11b) for ₹0 — which the recycled handset also did, but the UNO Q is the board Qualcomm
+bought Arduino to put in student hands, and it adds a real-time MCU for the flight link.
+
+## 18b. The BOM, and why no rendered image needs redoing
+
+| Line | ₹ |
+|---|---|
+| Base station — RB3 Gen 2 ₹50,000 + rugged case/power ₹5,000 + mast & antenna ₹4,000 | **59,000** |
+| Relay drone ×1 | **25,800** |
+| Scout ×4 (UNO Q ₹3,900, camera, GPS, FC, frame, propulsion, batteries) | 23,600 ea → **94,400** |
+| Scout ×2 with FLIR Lepton 3.5 (+₹16,600) | 40,200 ea → **80,400** |
+| Breadcrumb / acoustic-CO2 pods ×6 | **9,000** |
+| **Total** | **₹2,68,400 ≈ ₹2.68 L** |
+
+**Cost per km²: ₹498.** Against ₹2.69 L and ₹502 under the old architecture — **both round to the
+figures already rendered on the cost-ladder images.** The architecture change is free in artwork.
+
+Unchanged: 2.6 km²/h · +64 survivors per 100 · 5.8 h on the Wayanad footprint · ₹19.86 Cr for 738
+districts · 0.12% of the preparedness line. Every headline number in the deck survives.
+
+## 18c. What this supersedes
+
+- §0 correction 1 — the mothership could not air-launch scouts. **Moot: there is no mothership.**
+  Scouts are truck-launched, which was already the corrected position.
+- §7 BOM — replaced by §18b above.
+- Every occurrence of "mothership" in `slides/` becomes **"base station"** (in the vehicle) or
+  **"relay"** (the one cheap aircraft aloft).
+- LoRa is demoted. Scout-to-scout and scout-to-relay run on the **Qualcomm radios already on the
+  UNO Q** (Wi-Fi / BT, with 5G sidelink as the production path); LoRa survives only as long-range,
+  low-rate backhaul to the vehicle.
+
+## 18d. What it costs us, stated honestly
+
+The base station cannot see. When the relay is down and the scouts are beyond breadcrumb range, they
+are autonomous but unsupervised until they return — which is the same failure mode the degradation
+ladder already shows, one rung earlier. We accept it because the alternative was putting the only
+brain in the air on a 24-minute battery.

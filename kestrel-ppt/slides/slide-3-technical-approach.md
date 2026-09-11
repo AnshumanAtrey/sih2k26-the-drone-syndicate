@@ -21,7 +21,7 @@ The template asks for two things — the stack, and the method. The trap is answ
 and a box diagram, which is what most decks do and which proves nothing. Instead:
 
 - **The stack is Qualcomm's**, because Qualcomm wrote this problem statement. QCS6490 with a 12 TOPS
-  Hexagon NPU on the mothership, models compiled through Qualcomm AI Hub and QNN, Snapdragon Hexagon
+  Hexagon NPU on the base station, models compiled through Qualcomm AI Hub and QNN, Snapdragon Hexagon
   on every scout, PX4/ROS 2 on every airframe, an optional 5G modem for the *"optional 5G/Wi-Fi"*
   bullet the PS actually asks for. NVIDIA Jetson is named once, as the fallback, and that is all.
 - **The method is the fusion architecture**, and its content is a principle, not a pipeline: *sensors
@@ -221,7 +221,7 @@ Render style: premium aerospace exploded-view schematic, thin precise linework, 
 Text labels (render exactly, on leader lines):
 LEFT aircraft: "QUALCOMM RB3 GEN 2 — 12 TOPS" / "PIXHAWK 2.4.8 — PX4" / "FLIR LEPTON 3.5" / "LoRa SX1262 HUB" / "4S 5000 MAH x2"
 RIGHT aircraft: "RECYCLED SNAPDRAGON PHONE" / "HEXAGON NPU — QNN" / "LoRa NODE"
-Price chips in the centre gap: cyan chip reading "MOTHERSHIP 1.11 L", amber chip reading "SCOUT 25,600"
+Price chips in the centre gap: cyan chip reading "BASE STATION 1.11 L", amber chip reading "SCOUT 25,600"
 
 Constraint tail: 16:9. Only the labels listed. Both aircraft matte grey-black, no military markings, no weapons. No watermark, no border.
 ```
@@ -235,13 +235,13 @@ Qualcomm judge will repeat to the other judges.*
 
 | Layer | What we use | Why this and not the obvious alternative |
 |---|---|---|
-| **Mothership compute** | **Qualcomm RB3 Gen 2 / QCS6490** — 12 TOPS Hexagon NPU, 6 GB, Linux, ₹50,000. Production path: **ModalAI VOXL 2 / QRB5165**, 15 TOPS, PX4 on the sensor DSP, 5G-ready, 16 g | Qualcomm's robotics stack is the one this PS describes. **Detection runs INT8 on the Hexagon NPU; the language model runs on CPU/GPU — different engines, so report generation never steals frames from the detector.** Jetson Orin Nano is the named fallback, nothing more |
-| **Scout compute** | Second-hand **Snapdragon 8-series handset**, ₹9,000 — Hexagon NPU + 4K camera + IMU + GNSS + LTE modem + battery + sealed shell, 190 g | One part instead of six. Models reach it through the *same* Qualcomm AI Hub → QNN path as the mothership, so we maintain one toolchain, not two |
+| **Base station compute** | **Qualcomm RB3 Gen 2 / QCS6490** — 12 TOPS Hexagon NPU, 6 GB, Linux, ₹50,000. Production path: **ModalAI VOXL 2 / QRB5165**, 15 TOPS, PX4 on the sensor DSP, 5G-ready, 16 g | Qualcomm's robotics stack is the one this PS describes. **Detection runs INT8 on the Hexagon NPU; the language model runs on CPU/GPU — different engines, so report generation never steals frames from the detector.** Jetson Orin Nano is the named fallback, nothing more |
+| **Scout compute** | Second-hand **Snapdragon 8-series handset**, ₹9,000 — Hexagon NPU + 4K camera + IMU + GNSS + LTE modem + battery + sealed shell, 190 g | One part instead of six. Models reach it through the *same* Qualcomm AI Hub → QNN path as the base station, so we maintain one toolchain, not two |
 | **Perception — line of sight** | YOLOv8n person + pose, INT8 via **Qualcomm AI Hub → QNN**; FLIR Lepton 3.5 radiometric thermal | YOLOv8 runs **65+ FPS on a Snapdragon NPU against 2 FPS on its CPU** — the NPU is not an optimisation, it is the difference between real-time and unusable |
 | **Perception — through rubble** | **Passive WiFi probe-request + BLE advertisement sniffing on the scout's own phone radio** (₹0, 0 g) · FINDER-class UWB vital-signs radar · SCD41-class CO2 + NH3 · air-dropped acoustic/seismic pods on the six-servo release already in our PRD | The streams the PS's *"signs of human presence"* bullet actually needs. Chosen for **independent failure modes**, not for count: RF ignores line of sight, CO2 ignores darkness, radar ignores both, acoustics ignore depth. Peer-reviewed in this exact combination — *Sensors* 18(3) 852 tested CO2 + thermal + microphone and found CO2 usefully narrows the area and microphones add real benefit alongside other sensors |
 | **Fusion** | **Bayesian evidence accumulation on a geospatial grid** — each stream contributes a likelihood ratio per cell; the posterior *is* the priority queue. Two thresholds: **re-inspect** and **publish** | Not a rule stack. An AND-gate is brittle and discards weak-but-real hits; a weighted posterior means **a weak independent stream can never make the estimate worse**. Same Bayesian search theory that found the USS Scorpion and AF447, and it sits alongside the sweep-width method in `DATA.md` §6a |
 | **Flight & autonomy** | **PX4** + **ROS 2** + MAVROS; GPS nominal; **ORB-SLAM3 / VINS-Fusion** VIO published to PX4 as `GPS_INPUT` for GPS-denied flight (~0.5 m drift per 100 m); optical flow + LiDAR for altitude hold | Answers the PS's *GPS-enabled and GPS-denied navigation* bullet with an open stack we do not have to write |
-| **Human + wide-area priors** | Mothership carries an **open SSID with a captive portal** — locals submit *"my mother was in the blue house behind the temple"*, geotagged by aircraft position and RSSI, no internet needed (the Kerala 2018 `keralarescue.in` model, built by IEEE Kerala student volunteers with Kerala IT Mission). Plus **SACHET cell broadcast** (P2.3), aggregate sector counts, Sentinel-1 SAR change detection and ISRO Bhuvan footprints | Crowd reports do not detect anyone — **they re-weight the search.** Locals know who is missing and where they were standing, which no sensor can produce. In Bayesian terms it is the prior, and a strong one |
+| **Human + wide-area priors** | Base station carries an **open SSID with a captive portal** — locals submit *"my mother was in the blue house behind the temple"*, geotagged by aircraft position and RSSI, no internet needed (the Kerala 2018 `keralarescue.in` model, built by IEEE Kerala student volunteers with Kerala IT Mission). Plus **SACHET cell broadcast** (P2.3), aggregate sector counts, Sentinel-1 SAR change detection and ISRO Bhuvan footprints | Crowd reports do not detect anyone — **they re-weight the search.** Locals know who is missing and where they were standing, which no sensor can produce. In Bayesian terms it is the prior, and a strong one |
 | **Comms & reporting** | LoRa SX1262 mesh carrying **detections as JSON, never video**; optional LTE/5G; on-device **Llama 3.2 3B Q4 (2.0 GB)** writes the situation report and ranks the rescue queue | A survivor marker is a few hundred bytes. Designing for kilobits means the system degrades to *slower*, never to *offline*. Nothing in the mission path requires a network |
 
 ---
@@ -249,7 +249,7 @@ Qualcomm judge will repeat to the other judges.*
 ## 30-second script
 
 > "The stack is Qualcomm's, because the problem is Qualcomm's. A QCS6490 with a twelve-TOPS Hexagon
-> NPU is the mothership's brain, models compiled through Qualcomm AI Hub and QNN — YOLOv8 runs
+> NPU is the base station's brain, models compiled through Qualcomm AI Hub and QNN — YOLOv8 runs
 > sixty-five frames a second on that NPU against two on the CPU. Every scout's brain is a recycled
 > Snapdragon phone, same toolchain. PX4 and ROS 2 fly everything; ORB-SLAM3 feeds PX4 fake GPS when
 > the real one is gone. We chose the thermal sensor with arithmetic, not a catalogue — and rejected

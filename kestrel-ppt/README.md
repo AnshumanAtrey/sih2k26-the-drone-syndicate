@@ -3,7 +3,8 @@
 > **PS:** SIH26177 · **Qualcomm Inc** · Hardware · Robotics and Drones
 > **Idea:** Kestrel — a truck-launched drone swarm that sweeps a disaster zone in hours, not days
 > **Deadline:** 20 Sep 2026 · deliverable = **one PDF, six pages**
-> **Rewritten:** 9 Sep 2026 — 11 days out
+> **Architecture decided 11 Sep 2026:** the truck is the base. There is no flying mothership — `DATA.md` §18.
+> **Status:** 15 of 21 visuals rendered. The last 6 are in `PROMPTS-FINAL.md`.
 
 ---
 
@@ -19,7 +20,9 @@ kestrel-ppt/
 ├── DATA.md     ← every number, sourced and tagged. Single source of truth
 ├── STYLE.md    ← two tiers, both palettes, prompt grammar
 ├── PROMPTS-TO-RUN.md  ← round 1: the 9 slide-committed prompts, copy-paste ready
-├── PROMPTS-ROUND-2.md ← round 2: 9 exploratory prompts, nothing slide-committed yet
+├── PROMPTS-ROUND-2.md ← round 2: exploratory (rendered)
+├── PROMPTS-ROUND-3.md ← round 3: architecture alternatives (rendered)
+├── PROMPTS-FINAL.md   ← ★ THE ONLY ONE THAT MATTERS: the last 6 images
 ├── scripts/whiten.py  ← snaps a render's near-white to pure #FFFFFF and trims the margin
 ├── images/     ← 12 renders + the official SIH 2026 logo
 └── slides/

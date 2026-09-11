@@ -29,8 +29,7 @@ argue the real gap instead:
 >
 > The gap is not aircraft. It is **resolution, corroboration, and area**. Kestrel fixes all three.
 
-**Kestrel:** one mothership carrying Qualcomm compute hovers at 100 m as the brain and the radio
-relay. Six ₹25,600 scouts launch from the NDRF vehicle and sweep at 30 m, where a person is 8 pixels
+**Kestrel:** the Qualcomm compute rides in the NDRF vehicle as the base station, and one cheap relay drone holds the link aloft. Six ₹25,600 scouts launch from the NDRF vehicle and sweep at 30 m, where a person is 8 pixels
 of thermal and 154 pixels of RGB instead of a tenth of one pixel.
 
 **And for the person the cameras cannot see at all, Kestrel does not use cameras.** Thermal and RGB
@@ -111,7 +110,7 @@ High above and behind everything, one larger matte-black hexacopter hovering ste
 Lighting: cold blue ambient, warm amber spill from the truck interior, cyan rim-light on the airframes. Photorealistic, epic but restrained scale, hopeful rather than militaristic.
 
 Text labels (render exactly, as small HUD tags with thin cyan leader lines to their subject):
-- on the hexacopter: "MOTHERSHIP — QUALCOMM 12 TOPS"
+- on the hexacopter: "BASE STATION — QUALCOMM 12 TOPS"
 - on the nearest low-flying quadcopter: "SCOUT 30 M AGL"
 - on one radio arc: "LoRa MESH — NO NETWORK NEEDED"
 - on the truck: "TRUCK-LAUNCHED — 6 SCOUTS"
@@ -120,7 +119,7 @@ Text labels (render exactly, as small HUD tags with thin cyan leader lines to th
 Constraint tail: 16:9. Exactly these five labels, nothing else. No weapons, no missiles, no military markings. No watermark, no border.
 ```
 
-*Note the truck. The mothership does not air-launch the scouts and this image must not imply that it
+*Note the truck. The base station does not air-launch the scouts and this image must not imply that it
 does — six S500 scouts weigh ~7.2 kg against a 3 kg lift budget. See `DATA.md` §0, correction 1.*
 
 ---
@@ -257,7 +256,7 @@ The template asks explicitly for *innovation and uniqueness*. Three chips, cyan 
 > "At Wayanad in 2024, a sensor reported three breath signals under the rubble. Thirteen hundred
 > people searched. There was nothing there — most likely a frog. A thermal drone flew the same site
 > and reported zero human presence. Six days later, two hundred and six people had still not been
-> found. The gap isn't aircraft — it's resolution, corroboration and area. Kestrel is a mothership
+> found. The gap isn't aircraft — it's resolution, corroboration and area. Kestrel is a base station
 > carrying Qualcomm compute at a hundred metres, and six twenty-five-thousand-rupee scouts launched
 > off the back of an NDRF truck that sweep at thirty metres, where a person is eight thermal pixels
 > instead of a tenth of one. Nothing is called a survivor until thermal, pose and a second scout

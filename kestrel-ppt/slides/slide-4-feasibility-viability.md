@@ -24,7 +24,7 @@ one has an engineered answer — and to volunteer the one number that argues aga
 finds it.
 
 **The volunteered number:** a single scout costs **₹430 per km²**; the full swarm costs **₹502**. The
-mothership is overhead. **We are not selling cheapness — we are buying time**, and time is the only
+base station is overhead. **We are not selling cheapness — we are buying time**, and time is the only
 currency the survival curve accepts. Saying this on the page converts our weakest number into
 evidence that we did the arithmetic honestly.
 
@@ -218,7 +218,7 @@ it a readable width, the 0.12% has been lost. Numbers trace to `DATA.md` §9b an
 | **Sep 2026** | Scout v0 flying — S500 airframe, PX4, phone-as-compute |
 | **Oct–Nov 2026** | Fusion gate running on the Hexagon NPU; AI Hub profiling replaces every inference estimate |
 | **Dec 2026** | **SIH Grand Finale** — v0 demonstrated |
-| **Q1 2027** | Mothership + 2 scouts; LoRa mesh; district-EOC dashboard |
+| **Q1 2027** | Base station + 2 scouts; LoRa mesh; district-EOC dashboard |
 | **Q2–Q3 2027** | Full 6-scout swarm, field trials, **SDRF pilot with one DDMA** |
 
 ---
@@ -242,7 +242,7 @@ Text labels (render exactly, one under each waypoint stem, plus the flag label):
 - waypoint 1, cyan: "SEP 2026 — SCOUT V0 FLYING"
 - waypoint 2, cyan: "OCT-NOV — FUSION GATE ON NPU"
 - waypoint 3, amber: "DEC 2026 — SIH GRAND FINALE"
-- waypoint 4, cyan: "Q1 2027 — MOTHERSHIP + 2 SCOUTS"
+- waypoint 4, cyan: "Q1 2027 — BASE STATION + 2 SCOUTS"
 - waypoint 5, cyan: "Q2-Q3 2027 — FULL 6-SCOUT SWARM"
 - at the green flag, green: "SDRF FIELD PILOT"
 
@@ -257,7 +257,7 @@ Full per-line detail in `DATA.md` §7. On the slide, the compressed version:
 
 | Group | Key lines | ₹ |
 |---|---|---|
-| **Mothership** | Qualcomm RB3 Gen 2 (12 TOPS) **50,000** · FLIR Lepton 3.5 **16,600** · Pixhawk 2.4.8 **8,514** · S550 airframe + 6× propulsion **11,632** · RGB 12 MP, LoRa hub, EC200U LTE, GPS, 2× 4S 5000 mAh, PDB, telemetry | **1,11,500** |
+| **Base station** | Qualcomm RB3 Gen 2 (12 TOPS) **50,000** · FLIR Lepton 3.5 **16,600** · Pixhawk 2.4.8 **8,514** · S550 airframe + 6× propulsion **11,632** · RGB 12 MP, LoRa hub, EC200U LTE, GPS, 2× 4S 5000 mAh, PDB, telemetry | **1,11,500** |
 | **Scout × 6** | S500 frame **3,419** · propulsion **3,338** · FC **4,000** · **recycled Snapdragon phone 9,000** · LoRa node, 2× 4S 2200 mAh, PDB | **25,600 ea → 1,53,600** |
 | Ground station | LoRa base + antenna (laptop owned) | 4,000 |
 | **Total** | | **≈ ₹2,69,100** |
@@ -266,7 +266,7 @@ Prices are Indian-vendor sourced (Robocraze / Robu / Thundercomm / GroupGets), n
 Three lines are still `[ESTIMATE]` and are tagged as such in `DATA.md` — they total under ₹20,000.
 
 **Endurance and how sustained search is actually achieved.** From our own hexacopter PRD anchor
-(12–15 min at 3 kg, T/W 1.5:1, 4S 5000 mAh): the mothership carries ~1.5 kg of sensors and holds
+(12–15 min at 3 kg, T/W 1.5:1, 4S 5000 mAh): the base station carries ~1.5 kg of sensors and holds
 **~24 min** on a dual pack while hovering as a relay. Scouts hold **~18 min** per sortie. Continuous
 coverage is not an endurance claim — it is **battery rotation**: scouts land at the truck, swap in
 under a minute, and relaunch. Two spare packs per scout gives ~90 minutes of rolling coverage before
@@ -281,7 +281,7 @@ air-dropped scout gets one life, a truck-launched scout gets five.**
 |---|---|---|---|
 | 1 | **Daylight thermal inversion.** Sun-soaked rubble reaches 45–55 °C; skin is ~33 °C. In daylight the survivor is *colder* than the debris and every hot-spot filter inverts. This is documented operator testimony, not theory | **High — every clear afternoon** | Band-pass on 30–40 °C rather than "hottest pixel", and RGB pose carries the daylight decision while thermal carries the night. The gate (P3.2) requires agreement, so neither sensor can fail the mission alone |
 | 2 | **False positives cost lives by consuming rescuers.** The Wayanad precedent: three "breath signals", 1,300 people, nothing there | **High** | Three-gate corroboration; publish a confidence score and the evidence tiles with every marker. A rescue commander re-tasks on evidence, never on a bare pin |
-| 3 | **BVLOS is not freely permitted in India.** Only three national BVLOS corridors exist; beyond-visual-line-of-sight needs specific approval | **Certain — regulatory, not technical** | Green-zone ceiling is 120 m AGL and we fly 30–100 m, so altitude is compliant. Scouts stay inside the mothership's relay bubble and the operator's visual envelope; deployment path is state disaster-agency authorisation, the same route NDRF assets already fly under. *Wording to be verified against current Digital Sky text — `DATA.md` §8* |
+| 3 | **BVLOS is not freely permitted in India.** Only three national BVLOS corridors exist; beyond-visual-line-of-sight needs specific approval | **Certain — regulatory, not technical** | Green-zone ceiling is 120 m AGL and we fly 30–100 m, so altitude is compliant. Scouts stay inside the base station's relay bubble and the operator's visual envelope; deployment path is state disaster-agency authorisation, the same route NDRF assets already fly under. *Wording to be verified against current Digital Sky text — `DATA.md` §8* |
 | 4 | **VIO fails in fog, dust and featureless scenes** — exactly the conditions of a fresh landslide | Medium-high | Triple redundancy: PMW3901 optical flow + TFMini-S LiDAR altitude hold + IMU dead-reckoning, with a hard rule that a scout losing pose holds altitude and climbs to reacquire GNSS rather than continuing blind |
 | 5 | **On-device inference throughput is currently an estimate** (30–45 FPS for YOLOv8n INT8 on QCS6490) | Medium | **Qualcomm AI Hub profiles models on real Snapdragon hardware for free.** Every inference number in this deck becomes a measured number before the finale, without us owning the board |
 | 6 | **The swarm is not the cheapest option per km² — a single scout is** (₹430 vs ₹502) | Certain — it is arithmetic | Stated openly. The swarm is bought for **time**, not cost: 5.8 hours against 25 for one scout on a Wayanad-sized zone. Cost-effectiveness against the *deployed alternative* is the real comparison, and there it is 27× |
@@ -293,7 +293,7 @@ air-dropped scout gets one life, a truck-launched scout gets five.**
 
 > "The whole system is two-point-seven lakh — eighty-six minutes of helicopter charter, and every
 > price is from an Indian vendor. Now the honest part. A single scout is *cheaper* per square
-> kilometre than the swarm; the mothership is overhead. We're not buying cheapness, we're buying
+> kilometre than the swarm; the base station is overhead. We're not buying cheapness, we're buying
 > time. And a helicopter actually sweeps five times more area per hour than we do — it just costs
 > twenty-seven times more per square kilometre, can't fly at night, takes hours to position, and puts
 > one pair of human eyes at three hundred metres on a problem where a person is twenty arcminutes

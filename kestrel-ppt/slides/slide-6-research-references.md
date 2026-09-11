@@ -99,7 +99,7 @@ This block is the reason a judge believes the rest. Keep it.
 2. **Our ground-team baseline predicts the real operation.** 15 km² ÷ 0.1 km²/h = 150 search-hours
    ≈ 6 days of shift work, which is what Wayanad actually took. The model was not tuned to flatter us.
 3. **We publish the number that argues against us.** A single scout costs ₹430/km²; the swarm costs
-   ₹502. The mothership is overhead. The swarm buys time, not cost.
+   ₹502. The base station is overhead. The swarm buys time, not cost.
 
 ---
 
