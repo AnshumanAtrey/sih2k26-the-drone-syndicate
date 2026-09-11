@@ -834,3 +834,102 @@ in the Grand Finale prototype.
 - [ ] Confirm which consumer wearables expose the BLE Heart Rate Service in the advertisement itself.
 - [ ] Check whether C-DOT will discuss a SACHET message template for detectability — C-DOT Samarth is
       already on our grant target list, so there is a warm route in.
+
+---
+---
+
+# ADDENDUM 3 — 11 Sep 2026 · architecture review
+
+The mothership was never stress-tested. Twelve searches across the current literature and the
+competition ecosystems the user named. **The evidence runs against it**, and separately, Qualcomm's
+2026 strategy reframes what this deck should be.
+
+## 13. What Qualcomm actually wants — and it is not "a drone" `[SOURCED]`
+
+| Fact | Source |
+|---|---|
+| **Dragonwing IQ10**, 18-core, unveiled **CES 2026**, is "the heart of its 2026 robotics strategy" — for AMRs and humanoids | automate.org CES 2026 coverage |
+| Trade press frames it plainly: **"Qualcomm targets Nvidia Jetson with new robotics developer platform"** | automate.org |
+| **Qualcomm acquired Arduino**, Oct 2025 — explicitly "to get in on the ground floor with startups, developers, researchers and DIY tinkerers" | blog.arduino.cc, hackaday |
+| **Arduino UNO Q — $44** (≈₹3,900): Dragonwing **QRB2210** quad A53 with AI acceleration, GPU, ISP + **STM32U585** real-time MCU, 2 GB LPDDR4, 16 GB eMMC, **dual-band Wi-Fi 5 + BT 5.1 on board**, Arduino App Lab pre-installed | docs.arduino.cc/hardware/uno-q, linuxgizmos |
+| RB3 Gen 2's own headline claim: more inferences/sec and **"the ability to run more networks simultaneously"** | Qualcomm Dragonwing RB3 Gen 2 product brief |
+| **NEURA Robotics** strategic collaboration, Mar 2026 — "Physical AI" | neura-robotics.com |
+| Qualcomm markets **5G sidelink** for "vehicles, **drones**, and more" — direct device-to-device, no network | qualcomm.com/news/onq/2022/09 |
+
+**The reframe.** Qualcomm did not post this problem statement because it wants a drone. It wants the
+Indian student robotics ecosystem building on **Dragonwing instead of Jetson**, and it wants
+reference workloads that prove its product claims. So the strongest possible deck is not "we used a
+Qualcomm board" — it is **"we are the Dragonwing reference design for disaster robotics, and our
+workload is the one that proves the claim on your own product page."**
+
+Our multi-stream fusion is literally **five networks at once** — RGB detection, thermal, hazard
+classification, VIO, audio. That *is* "run more networks simultaneously." Say it in those words.
+
+**And LoRa is the wrong radio for this PS.** LoRa is Semtech. Qualcomm owns the device-to-device
+story: **5G sidelink / PC5 (C-V2X)** and **Wi-Fi Aware**. Research on **C-U2X** — cellular
+UAV-to-everything over 5G sidelink for UAV swarms — already exists. Correct answer is a hybrid: a
+Qualcomm D2D radio for the high-bandwidth short-range peer links, LoRa only as the long-range
+low-rate backhaul. Lead with the Qualcomm radio.
+
+## 14. The evidence against a flying mothership `[SOURCED]`
+
+| Finding | What it implies for us |
+|---|---|
+| **Zhejiang University**, *Swarm of micro flying robots in the wild*, Science Robotics 2022 — **10 palm-sized drones through dense bamboo forest, fully autonomous, decentralised, no external facilities**, each with stereo camera + IMU + onboard computer | A swarm needs **no** central aircraft to coordinate |
+| **Team CERBERUS**, winner, **DARPA Subterranean Challenge** 2021 (ETH Zurich et al.) — heavy multi-robot map optimisation runs at the **base station**; connectivity is held by **breadcrumbed wireless nodes dropped by the robots**, plus a ground rover with a high-gain antenna | Put the big compute **on the ground**, and hold the link with **dropped relays**, not a hovering aircraft |
+| **ACHORD** (JPL/CoSTAR) and **CARA** — communication-aware coordination with **droppable radios**, deployed at lowest-SNR points | Breadcrumbs are the validated answer to comms, and they reach **inside** structures where a relay at 100 m cannot |
+| **Market-based / auction replanning for SAR swarms** (arXiv 2606.01970) — decentralised bidding; **robust to agent loss, scalable, no single coordinator** | A commander node is a liability, not a feature |
+| **EPFL vswarm** — vision-based swarming with **no GNSS, no active ranging, and no explicit communication**, using CNN detection of neighbours | Formation-keeping does not even require a radio |
+| **Distributed / split DNN inference** — "device-device collaborative inference", model partitioning across nodes, pipelined (HiDP DATE 2025; COHORT arXiv 2603.10436; Energy-Efficient Collaborative DNN Inference in UAV Swarm) | The swarm can *be* the computer instead of carrying one |
+
+**Honest counterweight, because it is real:** the mothership is *easy to draw and explain in six
+pages*. A peer swarm with auction-based allocation is harder to make legible to a non-specialist
+judge. That is a communication cost, not an engineering argument — and it is the only thing the
+mothership still has going for it.
+
+## 15. Four candidate architectures — generate, then choose
+
+| | A · Flying mothership *(current)* | B · Truck is the base | C · Peer swarm, elected leader | D · Swarm is the computer |
+|---|---|---|---|---|
+| Heavy compute | aloft, 100 m | **in the vehicle** — mains power, no weight or endurance limit, real cooling | on whichever node wins the election | **partitioned across every node** |
+| Comms | mothership relays | **dropped breadcrumb radios** | peer mesh, D2D | peer mesh, D2D |
+| Single point of failure | **yes** | base is safe; relay is cheap | **none** | **none** |
+| Cost | ₹1.11 L aloft | ~₹60 K on the ground + cheap relay | no premium node at all | no premium node at all |
+| Qualcomm fit | one board | one board | every node Snapdragon | **every node Snapdragon, one pipeline** |
+| Legibility to a judge | **easiest** | easy | medium | hardest |
+| Evidence | none found for it | CERBERUS | Zhejiang, market-based | HiDP, COHORT |
+
+## 16. New capability ideas from the same pass `[SOURCED]`
+
+- **Arduino UNO Q as the scout brain** — ₹3,900, Qualcomm silicon, **Wi-Fi + BT on board so it does
+  the passive phone-RF sniffing (§11b) natively**, plus a real-time MCU for the flight link. Cheaper
+  than the recycled handset and exactly the board Qualcomm bought Arduino to put in student hands.
+- **Breadcrumb relay drops** — reuses the six-servo release already in `build-alpha/PRD.md`, same
+  rack as the acoustic pods (§11a stream 6).
+- **Open-vocabulary VLM search** — a commander types *"find the blue tarpaulin"* or *"the school
+  building"* and the swarm re-tasks. UAV-VLRR (arXiv 2503.02465), AirHunt (2601.12742), AVERY
+  (2511.18151, **VLM split computing for disaster response**). Answers PS bullets 4 and 6 in a way
+  no fixed 8-class model can.
+- **Event cameras** (Scaramuzza/UZH) — microsecond latency, enormous dynamic range; see through dust
+  and detect *motion* (a hand moving in a void) where a frame camera is blind.
+- **Foldable-arm drone** (UZH + EPFL) — retracts arms in flight to pass through narrow gaps.
+- **Collision-tolerant caged scout** (Flyability Elios class) — an exoskeleton cage plus firmware
+  that recognises and recovers from collisions, so it can enter voids by bumping through them.
+- **Marsupial deployment** — the named field: *"the main platform houses and releases smaller devices
+  that inspect the hardest to reach places."* Our flyer should carry **things that go where drones
+  cannot** — breadcrumbs, acoustic pods, a crawler — not other drones.
+- **Cyborg insects** — NTU Singapore + Osaka + Hiroshima. **Deployed to the Myanmar 7.7 earthquake,
+  30 Mar 2025, with the Singapore Civil Defence Force — the first field use of insect-hybrid robots
+  in a humanitarian operation.** The extreme end of "goes where nothing else fits." Cite as
+  direction-of-travel, do not claim we build it.
+- **Competition benchmarks to name:** SAFMC 2025 Category E (Swarm) ran a UAV swarm for SAR in
+  GPS-denied indoor environments; MBZIRC Maritime Grand Challenge bans GPS by rule, and KAIST placed
+  runner-up with vision-based navigation plus a drone-carried ground robot.
+
+## 17. Addendum 3 TODO
+
+- [ ] Profile YOLOv8n on **QRB2210** (UNO Q) via Qualcomm AI Hub — is it ≥5 FPS? That single number
+      decides whether the scout is a ₹3,900 UNO Q or a ₹9,000 handset.
+- [ ] Confirm whether Wi-Fi Aware / sidelink D2D is exposed on QRB2210 and QCS6490 in Qualcomm Linux.
+- [ ] Decide the architecture from the round-3 renders, then rewrite `slides/` §Kestrel accordingly —
+      §0 corrections 1 and 3, and every "mothership" mention, depend on the outcome.
