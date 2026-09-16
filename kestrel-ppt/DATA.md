@@ -1267,6 +1267,7 @@ it is the thing that proves the compute core is the product and the airframe is 
 
 ## 26. Addendum 5 TODO
 
+- [ ] **Everything in [`DEMO-PLAN.md`](DEMO-PLAN.md)** — the public link judges open. Tasks unclaimed.
 - [ ] **Profile YOLOv8n INT8 @640 on QRB2210 via Qualcomm AI Hub** — replace Foundries.io's YOLOv5
       Pico number with our own model on our own silicon. Free, no hardware needed. **Highest value
       remaining item in the whole project.**

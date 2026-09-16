@@ -22,9 +22,12 @@ kestrel-ppt/
 ├── PROMPTS-TO-RUN.md  ← round 1: the 9 slide-committed prompts, copy-paste ready
 ├── PROMPTS-ROUND-2.md ← round 2: exploratory (rendered)
 ├── PROMPTS-ROUND-3.md ← round 3: architecture alternatives (rendered)
-├── PROMPTS-FINAL.md   ← ★ THE ONLY ONE THAT MATTERS: the last 6 images
+├── PROMPTS-FINAL.md   ← the last 6 white-template images
+├── PROMPTS-CINEMATIC.md   ← 6 dark photographic shots (C1-C6, C3 never run)
+├── PROMPTS-SINGLE-DRONE.md ← ★ S1-S3: one scout answers the PS on its own. DATA.md §19
+├── DEMO-PLAN.md    ← ★ the public link judges can open. Unclaimed tasks, grab one
 ├── scripts/whiten.py  ← snaps a render's near-white to pure #FFFFFF and trims the margin
-├── images/     ← 12 renders + the official SIH 2026 logo
+├── images/     ← 12 renders + cinematic/ + single-drone/ + the official SIH 2026 logo
 └── slides/
     ├── slide-1-title.md                  0 prompts (view slide)
     ├── slide-2-proposed-solution.md      3 prompts
