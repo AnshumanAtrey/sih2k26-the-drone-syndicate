@@ -1,0 +1,180 @@
+<!doctype html>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kestrel — Autonomous Search Decision Stack</title>
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/ort.min.js"></script>
+<style>
+:root{--bg:#0b1220;--pan:#0f172a;--fg:#e2e8f0;--mut:#94a3b8;--cy:#22d3ee;--am:#f59e0b;
+--gr:#22c55e;--pu:#a855f7;--line:#1e293b;color-scheme:dark;
+padding-top:env(safe-area-inset-top,0);padding-bottom:env(safe-area-inset-bottom,0)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);
+font:14px/1.62 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:30px 16px 72px}
+h1{font-size:clamp(23px,4vw,33px);margin:0 0 6px;letter-spacing:-.022em}
+h2{font-size:17px;margin:34px 0 10px;letter-spacing:-.01em}
+h3{font-size:13px;text-transform:uppercase;letter-spacing:.07em;color:var(--mut);margin:0 0 10px}
+p{color:var(--mut);margin:.6em 0}.sm{font-size:12.5px}.mut{color:var(--mut)}
+.ok{color:var(--gr)}.bad{color:#f87171}
+.sub{color:var(--mut);margin:0}
+.tag{display:inline-block;font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+color:var(--cy);border:1px solid var(--cy);border-radius:3px;padding:2px 9px;margin:15px 0 20px}
+.grid{display:grid;grid-template-columns:1.25fr 1fr;gap:20px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--pan);border:1px solid var(--line);border-radius:9px;padding:16px}
+canvas,#ph{width:100%;border-radius:6px;background:#020617;display:block}
+#ph{aspect-ratio:16/9;display:grid;place-items:center;color:var(--mut);font-size:13px;padding:16px;text-align:center}
+button{background:var(--cy);color:#04141a;border:0;border-radius:6px;padding:9px 17px;
+font-weight:650;font-size:13.5px;cursor:pointer}button:disabled{opacity:.42;cursor:default}
+button.gh{background:transparent;color:var(--cy);border:1px solid var(--cy)}
+input[type=file]{font-size:12.5px;color:var(--mut);max-width:100%}
+input[type=range]{width:100%;accent-color:var(--cy)}
+.ex{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.ex img{width:86px;height:49px;object-fit:cover;border-radius:4px;border:1px solid var(--line);cursor:pointer}
+.ex img:hover{border-color:var(--cy)}
+.mets{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0 4px}
+.met{background:#0b1220;border:1px solid var(--line);border-radius:7px;padding:9px 10px}
+.met b{display:block;font-size:19px;letter-spacing:-.02em}
+.met span{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut)}
+.ctl{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;margin-top:6px}
+.ctl label{font-size:12px;color:var(--mut);display:block;margin-bottom:2px}
+.ctl b{color:var(--fg);font-variant-numeric:tabular-nums}
+.wrow{display:grid;grid-template-columns:1fr 90px 52px;gap:9px;align-items:center;
+font-size:12.5px;padding:3px 0}
+.bar{height:7px;background:#1e293b;border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--cy)}
+.wrow b{text-align:right;font-variant-numeric:tabular-nums}
+.out{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;max-height:190px;overflow:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0}
+th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left}
+th{color:var(--mut);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em}
+code{background:#1e293b;padding:1px 5px;border-radius:3px;font-size:12px}
+a{color:var(--cy)}.tw{overflow-x:auto}
+.note{border-left:2px solid var(--am);padding-left:13px;margin:15px 0}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--mut);margin-top:10px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+.ks{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;margin-top:10px}
+.ks label{cursor:pointer}
+</style>
+<div class="wrap">
+<h1>Kestrel — autonomous search decision stack</h1>
+<p class="sub">Smart India Hackathon 2026 · PS <b>SIH26177</b> (Qualcomm Inc) · Hardware · Robotics &amp; Drones</p>
+<span class="tag" id="tag">loading model…</span>
+
+<p>YOLO gives us boxes. <b>Everything that turns boxes into a search decision is ours</b> — where to
+look closer, how to weigh sensors that fail together, which cells are worth the battery, and what
+fits in the radio. Four algorithms, running live in this tab.</p>
+
+<div class="grid">
+  <div class="card">
+    <div id="ph">Pick an example or upload an image</div>
+    <canvas id="cv" hidden></canvas>
+    <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <input type="file" id="file" accept="image/*">
+      <button id="run" disabled>Run</button>
+      <span class="sm mut" id="stage"></span>
+    </div>
+    <div class="ks">
+      <label><input type="checkbox" id="kCrop" checked> descent windows</label>
+      <label><input type="checkbox" id="kRoute" checked> optimal route</label>
+    </div>
+    <div class="legend">
+      <span><i style="background:#22d3ee"></i>confirmed by descent</span>
+      <span><i style="background:#64748b"></i>single pass</span>
+      <span><i style="background:#a855f7"></i>descent window</span>
+      <span><i style="background:#22c55e"></i>planned tour</span>
+    </div>
+    <div class="ex" id="ex"></div>
+    <div class="mets">
+      <div class="met"><b id="mPass">—</b><span>boxes → merged</span></div>
+      <div class="met"><b id="mCrop">—</b><span>descent crops</span></div>
+      <div class="met"><b id="mConf">—</b><span>confirmed</span></div>
+      <div class="met"><b id="mMs">—</b><span>in this tab</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>1 · Two-pass descent <span class="mut" style="text-transform:none;letter-spacing:0">SAHI + WBF</span></h3>
+    <div class="out" id="oDet">—</div>
+
+    <h3 style="margin-top:20px">2 · Correlated fusion <span class="mut" style="text-transform:none;letter-spacing:0">solves Σw = 1</span></h3>
+    <div id="oW">—</div>
+    <div class="ctl">
+      <div><label>thermal ↔ RGB correlation <b id="sTv">0.85</b></label>
+        <input type="range" id="sT" min="0" max="0.95" step="0.05" value="0.85"></div>
+      <div><label>BLE ↔ RGB correlation <b id="sBv">0.05</b></label>
+        <input type="range" id="sB" min="0" max="0.95" step="0.05" value="0.05"></div>
+      <div><label>thermal reading <b id="vTv">0.7</b></label>
+        <input type="range" id="vT" min="0" max="0.95" step="0.05" value="0.7"></div>
+      <div><label>BLE reading <b id="vBv">0.6</b></label>
+        <input type="range" id="vB" min="0" max="0.95" step="0.05" value="0.6"></div>
+    </div>
+
+    <h3 style="margin-top:20px">3 · Route <span class="mut" style="text-transform:none;letter-spacing:0">Held-Karp, exact</span></h3>
+    <div id="oRoute">—</div>
+    <div class="ctl"><div><label>battery budget <b id="vEv">12000</b> J</label>
+      <input type="range" id="vE" min="2000" max="30000" step="1000" value="12000"></div>
+      <div><label>link budget <b id="vLv">1200</b> B</label>
+        <input type="range" id="vL" min="300" max="20000" step="100" value="1200"></div></div>
+
+    <h3 style="margin-top:20px">4 · Link budget <span class="mut" style="text-transform:none;letter-spacing:0">0/1 knapsack</span></h3>
+    <div id="oLink">—</div>
+  </div>
+</div>
+
+<h2>How do you know the algorithms are right?</h2>
+<p>Because they are checked against brute force. The route planner is compared to exhaustive
+permutation search and the knapsack to exhaustive subset enumeration; the fusion rule is asserted
+to collapse to classical Chair-Varshney when the correlation matrix is the identity.</p>
+<button class="gh" id="st">Run self-tests</button>
+<div class="out" id="oTest" style="margin-top:12px;max-height:none"></div>
+
+<h2>What each one does, and why that data structure</h2>
+<div class="tw"><table>
+<tr><th>Algorithm</th><th>Structure</th><th>Complexity</th><th>What it buys</th></tr>
+<tr><td><b>Two-pass descent</b><br><span class="mut sm">SAHI, arXiv 2202.06934</span></td>
+<td>greedy min-window-cover · spatial hash · union-find · weighted box fusion</td>
+<td>O(n log n) plan<br>O(n α(n)) merge</td>
+<td>A prone adult is <b>22 px</b> at 30 m and <b>45 px</b> at 15 m. Descending is resolution, not opinion. Covering six clustered candidates takes <b>one</b> crop, not six — every crop is a forward pass we pay for in joules.</td></tr>
+<tr><td><b>Correlated fusion</b><br><span class="mut sm">generalises Chair-Varshney 1986</span></td>
+<td>sparse <code>Map</code> on packed int keys · Gauss-Jordan solve</td><td>O(1) per update<br>O(k³), k≤8</td>
+<td>Thermal and RGB both die behind a slab, so summing them double-counts one physical vote. Inverse-covariance weights discount redundancy. At r=0.9 the pair is worth barely more than one independent stream.</td></tr>
+<tr><td><b>Route planning</b><br><span class="mut sm">prize-collecting Held-Karp</span></td>
+<td>bitmask DP over subsets</td><td>O(2<sup>k</sup>·k²)<br>k ≤ 15</td>
+<td>Greedy next-best-view strands the aircraft far from base. This is the <b>exact</b> optimum with return-to-base as a hard constraint inside the DP, not a check bolted on after.</td></tr>
+<tr><td><b>Link budget</b><br><span class="mut sm">0/1 knapsack</span></td>
+<td>1-D rolling DP + choice table</td><td>O(n·B)</td>
+<td>LoRa carries a few hundred bytes. A bare geo-record is 300 B, a thumbnail 8.3 kB. Sending in arrival order wastes the frame; this packs it optimally.</td></tr>
+</table></div>
+
+<h2>This ran on your device. That is the point.</h2>
+<p>The model and all four algorithms executed in your browser through WebAssembly — no server, no
+upload, no cloud. The problem statement asks for <i>on-device AI inference without dependence on
+cloud connectivity</i>, and your own hardware just did it.</p>
+
+<h2>Measured on real Qualcomm silicon</h2>
+<div class="tw"><table>
+<tr><th>Device</th><th>Precision</th><th>Latency</th><th>Throughput</th><th>On NPU</th></tr>
+<tr><td><b>Arduino Ventuno Q</b><br><span class="mut sm">Dragonwing IQ-8275 · Hexagon v75</span></td>
+<td><b>INT8</b></td><td><b>1.85 ms</b></td><td><b>539.7 FPS</b></td><td><b>247 / 247</b></td></tr>
+<tr><td>Dragonwing RB3 Gen 2<br><span class="mut sm">QCS6490 · Hexagon v68</span></td>
+<td>INT8</td><td>11.21 ms</td><td>89.2 FPS</td><td>247 / 247</td></tr>
+<tr><td>Arduino Ventuno Q</td><td>fp16</td><td>6.77 ms</td><td>147.8 FPS</td><td>247 / 247</td></tr>
+<tr><td>Dragonwing RB3 Gen 2</td><td>fp16</td><td colspan="3" class="mut">graph will not compose on Hexagon v68</td></tr>
+</table></div>
+<p>Profiled through <b>Qualcomm AI Hub</b> on physical devices — not a simulator, not an estimate.
+YOLOv8n at 640×640, QNN DLC, <code>--quantize_io</code>. <b>Every layer executes on the Hexagon NPU,
+zero CPU fallback.</b></p>
+<div class="note">Your browser is not a Hexagon NPU. The table is from Qualcomm's hardware; this page
+is the pipeline. We are not going to pretend a web demo is an embedded benchmark.</div>
+
+<h2>The arithmetic that matters</h2>
+<p>A 30 m sweep at 4 m/s with 50% frame overlap needs a new frame every 4.55 s — <b>0.22 Hz</b>. The
+board delivers 539 FPS. That headroom is not for one fast detector: it is for running detection,
+visual-inertial odometry, an open-vocabulary encoder and the radio scanner <i>at once</i> — Qualcomm's
+own "run more networks simultaneously" claim, with a workload attached.</p>
+<p class="sm">Detector: YOLOv8n, COCO weights, 640×640 — a fielded build fine-tunes on aerial
+search-and-rescue imagery. The <b>algorithms above are the contribution</b>; the weights are stock and
+we say so. Example images are our own renders; upload a real photograph to test it properly.
+Thermal and BLE streams are slider-driven — the RGB and descent streams are computed from your image.</p>
+</div>
+<script src="kestrel.js"></script>
+<script src="app.js"></script>
