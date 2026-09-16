@@ -995,3 +995,283 @@ The base station cannot see. When the relay is down and the scouts are beyond br
 are autonomous but unsupervised until they return — which is the same failure mode the degradation
 ladder already shows, one rung earlier. We accept it because the alternative was putting the only
 brain in the air on a 24-minute battery.
+
+---
+---
+
+# ADDENDUM 5 — 15 Sep 2026 · THE SINGLE DRONE
+
+**Five days to the deadline.** This addendum closes the largest remaining hole in the deck, and it is
+a hole in *PS compliance*, not in engineering.
+
+## 19. The hole: we answered a question they did not ask `[STRATEGIC]`
+
+SIH26177's title is **"A deployable AI-powered autonomous drone"** — singular. Read the eight
+Expected-Solution bullets again and check each against an aircraft count:
+
+| PS bullet | Aircraft required |
+|---|---|
+| Autonomous Navigation — GPS + GPS-denied, SLAM, obstacle avoidance | **one** |
+| On-Device AI Inference — real-time, no cloud | **one** |
+| Multi-Sensor Fusion — RGB, thermal, IMU, GPS | **one** |
+| Hazard Classification — flood, fire, smoke, debris, structures, landslide | **one** |
+| Geo-Tagged Mapping | **one** |
+| Emergency Alerting | **one** |
+| Offline Resilience | **one** |
+| Command Center Dashboard | **zero** (ground software) |
+
+**Not one bullet requires a second aircraft.** The swarm is entirely our addition. That is fine — it
+is our novelty — but Addendum 4 moved the fusion stack and the language model into the truck, and a
+judge reading the deck cold can now reach a devastating and *fair* conclusion:
+
+> *"The problem statement asked for an AI-powered autonomous drone. They built an AI-powered truck
+> and six drones that report to it."*
+
+**The fix is not a disclaimer, it is an ordering.** One scout must be a complete, self-sufficient,
+PS-compliant autonomous drone with the truck switched off. The base station is then an
+**accelerator, never a dependency** — it makes six scouts better than six independent scouts, which
+is a different and much stronger claim than making them work at all.
+
+**The line for the deck:**
+
+> **One Kestrel scout is a complete answer to the problem statement. Six is the answer to Wayanad.**
+
+## 20. §17 TODO RESOLVED — QRB2210 throughput is measured, not estimated `[SOURCED — third-party, on the exact board]`
+
+Addendum 3 §17 said one number decides whether the scout is a ₹3,900 UNO Q or a ₹9,000 handset.
+**That number now exists**, measured by Foundries.io on a physical UNO Q:
+
+| Measurement | Value | Source |
+|---|---|---|
+| **YOLOv5 Pico @ 640×480 on the Dragonwing MPU** | **~17 FPS · ~58 ms/frame** | foundries.io "Elf Detector" pt 4 |
+| YOLO26n, unoptimised | 400–450 ms/frame → **2–2.5 FPS** | elektroda / sbcwiki round-ups |
+| YOLOv4-tiny, CPU only | **~2.5 FPS** | same |
+| YOLOv5 via Edge Impulse SDK | **~17 FPS** | Edge Impulse on UNO Q |
+
+**The 7× spread between rows is the entire engineering story**, and it is the same "we computed it,
+we did not catalogue it" move as the pixel ladder (§5): *the board is fast enough if you pick and
+compile the model correctly, and hopeless if you drop stock YOLO on the CPU.* A team that quotes
+17 FPS without saying which model got it has not run it.
+
+**Verdict: the UNO Q clears, with enormous margin — but not for the reason it looks like.** See §21.
+
+`[VERIFY before submitting]` Re-run YOLOv8n INT8 @640 through **Qualcomm AI Hub** free device
+profiling to get *our* model's number on *our* silicon rather than citing someone else's model.
+
+## 20a. Spec the 4 GB variant, not the 2 GB `[SOURCED]`
+
+| | UNO Q 2 GB (ABX00162) | **UNO Q 4 GB (ABX00173)** |
+|---|---|---|
+| RAM / eMMC | 2 GB / **16 GB** | **4 GB / 32 GB** |
+| India price | ~₹3,900 ($44) | **₹5,190** IndiaMART Mumbai · ₹7,660 QuartzComponents · ₹9,039 Indian Hobby Center |
+
+Both carry the same QRB2210 (quad Cortex-A53 @ 2.0 GHz, Adreno GPU, **dual ISP**, always-on Hexagon
+DSP), the same STM32U585 real-time MCU, dual-band **Wi-Fi 5 + BT 5.1**, 7–24 V input.
+
+**Take the 4 GB.** The memory budget in §21b does not close on 2 GB, and the 32 GB eMMC is what makes
+the store-and-forward argument in §23 real. Cost: **+₹1,290 × 6 = +₹7,740** on a ₹2.68 L system —
+**2.9% for double the RAM and double the storage.** Obvious buy.
+
+`[VERIFY]` Price against **Robu.in**, the vendor the rest of the BOM uses, before printing a figure;
+the ₹5,190–₹9,039 spread across Indian retailers is wide enough to matter.
+
+## 21. What the scout actually needs — and it is not frame rate `[DERIVED]`
+
+The seductive move is to put "17 FPS" on the slide. It is the wrong number, and a Qualcomm engineer
+will know it. **Coverage sweep is not compute-bound.** Deriving the real requirement:
+
+| Step | Value |
+|---|---|
+| Per-scout area rate (2.6 km²/h ÷ 6) | 0.433 km²/h = 433,000 m²/h |
+| ÷ 30 m thermal swath (§5, §6b) | → ground speed **4.0 m/s** |
+| RGB along-track footprint at 30 m, 4:3 sensor, 78° HFOV | 36.4 m |
+| New frame at 50% along-track overlap | every 18.2 m → every 4.55 s |
+| **Detection rate the sweep actually demands** | **0.22 Hz** |
+| Measured capability | 17 FPS |
+| **Headroom** | **~77×** |
+
+**So what is the headroom for?** Exactly what Qualcomm's own RB3 product brief claims as its headline
+— *"the ability to run more networks simultaneously"* (§13). The scout does not spend 17 FPS on one
+detector. It spends it running **detection, visual-inertial odometry, an open-vocabulary encoder and
+the radio scanner concurrently on four cores**. The headroom *is* the argument, and it is Qualcomm's
+own argument, handed back to them with a workload attached.
+
+### 21a. Four cores, four jobs, and every engine on the die used
+
+| Engine | Job | Rate |
+|---|---|---|
+| **STM32U585** (separate die) | PX4 attitude, mixing, failsafe, geofence, battery-critical RTL | **1 kHz, hard real-time, cannot be preempted by Linux** |
+| A53 core 0 | Debian + ROS 2 + mesh / Wi-Fi / LoRa backhaul | — |
+| A53 core 1 | **VIO** — VINS-Fusion mono-inertial, sliding window | 20 Hz |
+| A53 core 2 | **YOLOv8n INT8** person + 8 hazard classes | 0.5 Hz sweep · 10 Hz confirm |
+| A53 core 3 | mission behaviour tree · evidence grid · Wi-Fi/BLE scan · logging | 1 Hz |
+| **Adreno GPU** | image preprocessing · MobileCLIP image encoder | on demand |
+| **Hexagon DSP** (always-on) | sensor fusion, audio — the acoustic stream if a mic is fitted | continuous, low power |
+| **Dual ISP** | two camera pipes: RGB down + thermal (on 2 of 6) | hardware |
+
+**The "dual brain" on the board becomes the safety argument:** if Linux panics mid-flight, the
+STM32 still holds attitude and executes a failsafe landing. That is not marketing — it is a genuine
+architectural property of this specific board, and no Jetson-based entry can claim it.
+
+### 21b. Memory budget, 4 GB variant `[DERIVED — ESTIMATE, to be measured]`
+
+| Component | RAM |
+|---|---|
+| Debian + ROS 2 Humble | ~600 MB |
+| VINS-Fusion sliding window | ~400 MB |
+| YOLOv8n INT8 + QNN runtime | ~200 MB |
+| MobileCLIP-S0 INT8 image encoder | ~100 MB |
+| Evidence + occupancy grid (1 km² @ 1 m cells, multi-layer) | ~50 MB |
+| Frame buffers, ring log, mesh stack | ~300 MB |
+| **Total** | **≈1.65 GB of 4 GB** |
+
+Comfortable on 4 GB. **Does not close on 2 GB** once VIO and the detector are resident together.
+
+## 22. The SLM question, answered properly `[DERIVED + SOURCED]`
+
+**Does a language model go on the drone?** The honest answer has three parts, and stating all three
+is worth more than claiming a language model in the flight loop.
+
+### 22a. Not in the control loop — and say why, on the slide
+
+> **A token takes ~100 ms. A wall arrives in 20.**
+
+A language model cannot sit in a flight decision loop. Quad-A53 at 2 GHz running llama.cpp gives
+roughly 5–12 tok/s on a 0.5 B Q4 model; a 150-token report is **12–30 seconds**. Fine for reporting,
+disqualifying for control. Many SIH entries will put "LLM on the drone" on a slide and a Qualcomm
+engineer will discount the whole deck for it. **We get credit for the opposite.**
+
+### 22b. The decision layer is a utility-ranked behaviour tree, not a model
+
+Running at **1 Hz on core 3**, fully deterministic and explainable — which matters because a rescue
+commander has to be able to ask *why did it go there*:
+
+```
+if  battery < RTL_reserve                  -> RETURN            [Tier 0, STM32, non-negotiable]
+if  cell_posterior > PUBLISH               -> MARK, TRANSMIT, ORBIT for confirmation
+if  cell_posterior in [REINSPECT, PUBLISH) -> DESCEND to 15 m, re-image on a new heading
+if  link_quality < FLOOR                   -> DROP BREADCRUMB
+else                                       -> fly to the frontier cell maximising
+                                              EXPECTED INFORMATION GAIN PER JOULE
+```
+
+That last line is the same **Bayesian search theory** already cited for the USS Scorpion and AF447
+(§6a) — applied to next-best-view selection instead of ocean search. ~200 lines of behaviour tree.
+
+**And the confirmation pass is not a second opinion — it is resolution gain by descent:**
+
+| Altitude | GSD @ 640 px across a 48.6 m swath | Prone adult (1.7 m) |
+|---|---|---|
+| 30 m sweep | 0.076 m/px | **22 px** — marginal but real |
+| 15 m confirm | 0.038 m/px | **45 px** — comfortable |
+
+The aircraft *buys certainty with altitude*, and it decides to spend that altitude by itself. That is
+what "autonomous" means in this PS, expressed as a physical mechanism rather than a claim.
+
+### 22c. What the "language" model on the scout actually is: an open-vocabulary encoder
+
+A fixed 8-class detector covers the PS's hazard list exactly. It cannot cover *"find the blue
+tarpaulin"*, *"the school building"*, *"the overturned bus"* — which is what commanders actually say.
+
+**MobileCLIP-class image encoder on the scout (~100 MB INT8, Adreno/Hexagon), text encoder at the
+base station.** The commander types a phrase; the base encodes it **once** into a 512-float vector;
+that vector goes to every scout over the mesh as a **2 KB message**; each scout scores its live
+frames against it on-device with a dot product.
+
+**Open-vocabulary search, fully on-device, re-taskable over 2 KB, with no retraining and no cloud.**
+This is precisely the split-computing architecture in the literature already logged in §16 —
+UAV-VLRR (arXiv 2503.02465), AirHunt (2601.12742), **AVERY (2511.18151, VLM split computing for
+disaster response)**. It answers PS bullets 2 and 4 in a way no fixed class list can.
+
+### 22d. Where a real SLM does earn its place on the aircraft
+
+**Qwen2.5-0.5B-Instruct Q4 (~400 MB), run on the ground, after landing, in the degraded case.**
+When the mesh is down and the scout has flown alone, it lands and turns its structured event log
+into three sentences of English and Hindi in ~20 seconds. Nothing is in a loop; nothing competes with
+the detector.
+
+**Why this matters more than it looks:** it is what makes the claim *"one scout, no truck, no
+network, still a complete PS-compliant system"* literally true, end to end, including the
+*Emergency Alerting* bullet. The 3 B model (Llama 3.2 3B Q4, 2.0 GB) stays at the base station where
+it fuses six scouts' logs into one situation report.
+
+## 23. Reporting back — three paths, and the aircraft is the last one `[DERIVED]`
+
+A survivor record is **~300 bytes** structured, **~8 KB** with a thumbnail crop:
+
+```json
+{"t":"2026-09-15T04:12:33Z","lat":11.4821,"lon":76.1329,"alt_agl":15.2,
+ "class":"person_prone","conf":0.91,"posterior":0.87,
+ "votes":{"rgb":0.91,"thermal":0.78,"ble":1,"wifi_probe":2},
+ "ble_mac_hash":"a3f1...","crop":"<8KB JPEG>"}
+```
+
+| Path | Rate | When |
+|---|---|---|
+| **Wi-Fi 5 mesh** → relay → truck | Mbps | line of sight holds |
+| **LoRa SX1262 backhaul** | ~300 B record fits in a few frames | mesh down, truck in range |
+| **Store-and-forward on 32 GB eMMC** | the whole sortie | **everything is down** |
+
+**The third path is the one to say out loud.** With 32 GB of onboard eMMC, *the aircraft is the data
+link.* If every radio fails, the mission still completes — the scout flies home carrying the map.
+
+> **The worst case is not "no data." It is "data eighteen minutes late."**
+
+That is the *Offline Resilience* bullet answered at its strongest, and it is free — we already bought
+the storage in §20a.
+
+## 24. GPS-denied, handled honestly — the drift arithmetic nobody else will show `[DERIVED]`
+
+VIO drift is ~0.5% of path length (VINS-Fusion mono-inertial, EuRoC-class benchmarks — **`[ESTIMATE
+from published VIO results]`, not our measurement**). Run that forward honestly:
+
+| Case | Path | Drift |
+|---|---|---|
+| Naive claim — VIO for a whole 18-min sortie | 4.3 km | **21 m — useless for a survivor marker** |
+| **Reality: GPS-denied segments are bounded** — 1–3 min under canopy or inside a structure | 240–720 m | **1.2–3.6 m** |
+
+**Three things bound it**, and all three are already in the design:
+1. **GPS re-acquisition** the moment sky view returns — the drift resets
+2. **Breadcrumb pods as surveyed anchors** — each is dropped while GPS is still good, so its position
+   is known; re-hearing one is a loop closure
+3. **Loop closure at the truck** on every return leg
+
+**So the claim is not "we navigate without GPS indefinitely."** It is: *GPS-denied excursions are
+minutes long, bounded by anchors, and land inside the re-inspect radius.* A team that shows the 21 m
+number and then explains why it never happens beats a team that shows only the 0.5%.
+
+## 25. Flying inside buildings — the gap, stated plainly `[GAP — decision required]`
+
+`PROMPTS-CINEMATIC.md` C2 shows a quadcopter flying down a collapsed corridor dropping breadcrumbs.
+**The BOM airframe cannot do that.** An S500 is a 500 mm-class frame; a collapsed doorway is not.
+Also against it: dust destroys VIO features, darkness needs illumination that then blinds VIO, and
+wall/ground effect makes control unstable in confined volumes.
+
+Note what the PS does and does not require: it says **"GPS-denied navigation … in damaged
+environments"** — mandatory, and satisfied outdoors under canopy and in urban canyon. It never says
+*inside buildings*. **Indoor is over-delivery, not compliance.**
+
+Two honest options:
+
+| | Keep it outdoor-only | **Add Scout-I** |
+|---|---|---|
+| Airframe | S500 only, 500 mm | + 3.5" caged micro-quad, ~250 mm with cage |
+| Inside structures | breadcrumb pods only, dropped from outside | flies a 400 mm gap, ~8 min endurance |
+| Compute | — | **same UNO Q, same PX4, same models, same mesh** |
+| BOM | unchanged | swap 1 of 6 S500 scouts → roughly cost-neutral |
+| Risk | C2 render contradicts the spec | one more airframe to build by the finale |
+
+**Recommendation: add Scout-I as one of the six.** It is close to cost-neutral, it makes C2 truthful,
+and "two airframes, one software stack" is a far stronger *deployability* story than one airframe —
+it is the thing that proves the compute core is the product and the airframe is a fitting.
+
+## 26. Addendum 5 TODO
+
+- [ ] **Profile YOLOv8n INT8 @640 on QRB2210 via Qualcomm AI Hub** — replace Foundries.io's YOLOv5
+      Pico number with our own model on our own silicon. Free, no hardware needed. **Highest value
+      remaining item in the whole project.**
+- [ ] Price UNO Q 4 GB (ABX00173) on **Robu.in** to match the rest of the BOM's vendor basis.
+- [ ] Decide Scout-I (§25) — it changes one BOM line and makes C2 honest.
+- [ ] Re-order slides 2 and 3 per §19: **slide 2 = the system, slide 3 = one drone.**
+- [ ] Propagate §18b + §20a BOM into `slides/` — slide 3 and slide 4 still carry the superseded §7
+      recycled-handset BOM.
