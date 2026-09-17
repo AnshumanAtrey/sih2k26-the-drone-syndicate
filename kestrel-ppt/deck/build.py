@@ -32,10 +32,12 @@ def lab(t, x, y, w):
 
 def slide(title, body, n):
     return f'''<section class="s">
+  <div class="oval">Drone<br>Syndicate</div>
+  <img class="slogo" src="img/sih-logo.png">
   <div class="tb"><h1>{html.escape(title)}</h1></div>
   {body}
   <div class="bar"></div>
-  <div class="ft">SIH 2026 · PS 26177 · Qualcomm Inc · Hardware · Robotics &amp; Drones · <b>Drone Syndicate</b></div>
+  <div class="ft">@SIH Idea submission · PS 26177 · Qualcomm Inc · Hardware · Robotics &amp; Drones · <b>Drone Syndicate</b></div>
   <div class="pg">{n}</div>
 </section>'''
 
@@ -277,14 +279,19 @@ html,body{margin:0;padding:0;background:#fff;
 .s{position:relative;width:13.333in;height:7.5in;overflow:hidden;background:#fff;
  page-break-after:always;break-after:page}
 .s:last-child{page-break-after:auto}
-.tb{position:absolute;left:.28in;top:0;width:12.77in;height:.84in;display:flex;align-items:center}
-.tb h1{font-family:"Times New Roman",Times,serif;font-weight:700;font-size:25pt;margin:0;
- letter-spacing:.005em;color:#0f2038}
+.tb{left:1.72in;top:0;width:9.9in;height:.84in;display:flex;align-items:center;
+ justify-content:center}
+.tb h1{font-family:"Times New Roman",Times,serif;font-weight:700;font-size:24pt;margin:0;
+ letter-spacing:.005em;color:#0f2038;text-align:center}
+.oval{left:.26in;top:.09in;width:1.3in;height:.66in;border:.014in solid #8A87C4;
+ border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;
+ font-size:8.4pt;font-weight:700;line-height:1.14;color:#0f2038}
+.slogo{left:11.72in;top:.1in;width:1.34in}
 .bar{position:absolute;left:0;top:6.95in;width:13.333in;height:.55in;
  background:linear-gradient(90deg,#0070C0 0 62%,#8C8C8C 62% 81%,#C0504D 81% 100%)}
 .ft{position:absolute;left:.3in;top:7.06in;font-size:8pt;color:#fff;letter-spacing:.02em}
 .pg{position:absolute;right:.32in;top:7.05in;font-size:11pt;color:#fff;font-weight:700}
-.ab,.tb,.bar,.ft,.pg,.logo,.tw,.hero,.hcap,.stats{position:absolute}
+.ab,.tb,.bar,.ft,.pg,.logo,.tw,.hero,.hcap,.stats,.oval,.slogo{position:absolute}
 .key{font-size:11.2pt;line-height:1.2;color:#0070C0;display:flex;align-items:center;
  border-left:.035in solid #0070C0;padding-left:.11in}
 .lab{font-size:7.3pt;font-weight:700;letter-spacing:.055em;color:#5b6b83;
