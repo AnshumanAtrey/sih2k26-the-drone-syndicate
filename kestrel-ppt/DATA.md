@@ -1395,3 +1395,88 @@ Full analysis in `deck/README.md`.
 - [ ] `slides/` markdown is **superseded** by `deck/` and still carries the §7 BOM — reconcile or retire
 - [ ] Confirm the SIH portal's PDF size cap; we are at ~10 MB and can reach <8 MB by recompressing
       photographic panels without touching layout
+
+---
+---
+
+# ADDENDUM 7 — 17 Sep 2026 · OUR OWN WEIGHTS, AND TWO NETWORKS AT ONCE
+
+## 32. The detector is now ours `[MEASURED — Kaggle T4, held-out test split]`
+
+YOLOv8n fine-tuned on **SARD** (the published aerial search-and-rescue benchmark, 1,980 images,
+6,525 person instances), 183 epochs in 2.43 h on a Tesla T4. Single class `human`.
+
+| Metric | Held-out test (570 images, 732 instances) |
+|---|---|
+| **mAP@50** | **0.952** |
+| mAP@50-95 | 0.665 |
+| Precision | 0.969 |
+| Recall | 0.900 |
+
+**Context, stated honestly:** published work reports YOLOv4 at **97.15% mAP@0.4** on SARD. Ours is
+**95.2% at the stricter @0.5 threshold**, so this sits alongside the literature rather than above it.
+
+SARD was the dataset Roboflow **403'd** on us in Addendum 5; it was on Kaggle the whole time, in
+better condition. Addendum 5 §26 planned to fine-tune on VisDrone instead — SARD is the better
+choice and it was available.
+
+## 33. Two networks, both fully on the NPU `[SOURCED — AI Hub, physical devices]`
+
+Qualcomm's RB3 product brief sells *"the ability to run more networks simultaneously."* §21 argued
+our headroom exists for exactly that, but only the detector had ever been measured. Both are now.
+
+| Model | Device | Precision | Latency | Throughput | Compute units | Peak | Job |
+|---|---|---|---|---|---|---|---|
+| **SARD detector** (ours) | Ventuno Q | INT8 | **1.72 ms** | 580.7 FPS | **247/247 NPU** | 6.3 MB | `j5681237g` |
+| **MobileCLIP2-S0** visual | Ventuno Q | INT8 | **0.87 ms** | 1146.8 FPS | **233/233 NPU** | 4.8 MB | `jgnzelzrg` |
+| **Both, per frame** | Ventuno Q | INT8 | **2.59 ms** | **386 Hz** | **480/480 NPU** | 11.1 MB | |
+| SARD detector | RB3 Gen 2 | INT8 | 10.77 ms | 92.8 FPS | 247/247 NPU | 8.4 MB | `jgolvzedg` |
+| MobileCLIP2-S0 | RB3 Gen 2 | INT8 | **fails** | — | — | — | — |
+
+**The sweep needs 0.22 Hz (§21). Detection and open-vocabulary search together deliver 386 Hz.**
+Zero CPU fallback in either. That is Qualcomm's own claim, measured, with our workload on their
+silicon — and it is the strongest single line available to this panel.
+
+**MobileCLIP2-S0 confirms §22c's architecture independently.** Input 256×256, output a **512-float
+embedding** — exactly the vector §22c says crosses the mesh. And the split is forced by the numbers:
+the **visual encoder is 47 MB, the text encoder is 247 MB.** The image side flies; the text side
+stays in the truck. We proposed that split on reasoning; the model's own file sizes require it.
+
+**RB3 Gen 2 could not compose the CLIP graph** — same `MODEL_GRAPH_ERROR` as its fp16 failure in §27.
+Hexagon **v68 is the limiting factor twice over**, which is the third independent argument for the
+Ventuno swap in §27b, after price and throughput.
+
+`[VERIFY]` Calibration data is random, which affects **accuracy, not latency**. Every figure above is
+latency or memory. Accuracy comes from §32, measured in float on real images.
+
+## 34. Four failures worth recording, because each had a different cause
+
+Getting MobileCLIP profiled took four attempts, and the failure modes are all reusable:
+
+1. **External weights.** `visual.onnx` stores tensors in a `.data` sidecar that `upload_model` does
+   not carry. Fix: re-save self-contained, `full_check=True`.
+2. **Dynamic batch.** AI Hub will not quantize a dynamic shape. Its error names the remedy: compile
+   to `onnx` with explicit `input_specs` first to freeze it.
+3. **Then quantize the frozen graph**, not the original.
+4. **v68 cannot take it at all** — a hardware limit, not a pipeline one.
+
+Same discipline as §27's three findings. None of these are in a tutorial; all four cost a cycle.
+
+## 35. The live demo now runs our weights `[LIVE]`
+
+https://huggingface.co/spaces/anshumanatrey/kestrel-survivor-detection
+
+The browser executes the **SARD-trained** detector, not stock COCO. The head is single-class, so the
+output is `[1,5,8400]`; `app.js` reads the class count at runtime and only falls back to COCO names
+if a multi-class model is ever swapped back, so the page cannot silently mislabel later.
+
+## 36. The flight `[IN PROGRESS]`
+
+PX4 SITL flew the §21 profile and the ULog confirms it: **max altitude 30.0 m** against a 30 m spec,
+**mean ground speed 3.8 m/s** against 4.0, and an extent of **220 m north by 90 m east** — four lanes
+at 30 m spacing, exactly as specified.
+
+It did not upload: **439 MB, and `review.px4.io` returns 413.** Speed factor 4 logged 32 minutes of
+simulated time and the default `SDLOG_PROFILE` includes estimator replay, which was ~964k samples on
+its own. Re-running at speed factor 1 with `SDLOG_PROFILE=1` and `SDLOG_MODE=0` (arm-to-disarm).
+**The flight is real; only the file size was wrong.**
