@@ -57,36 +57,20 @@ S = []
 
 # ---------------------------------------------------------------- 1 TITLE
 S.append(f'''<section class="s title">
-  <img class="logo" src="img/sih-logo.png">
-  <div class="tw">
-    <div class="ev">SMART INDIA HACKATHON 2026</div>
-    <h1 class="pt">A deployable AI-powered autonomous drone that aids search-and-rescue
-      operations by detecting people and hazards, thereby improving responder safety and
-      reducing victim discovery time.</h1>
-    <div class="rule"></div>
-    <div class="meta">
-      <span><em>Problem Statement ID</em>26177</span>
-      <span><em>Theme</em>Robotics and Drones</span>
-    </div>
-    <div class="meta">
-      <span><em>PS Category</em>Hardware</span>
-      <span><em>Organisation</em>Qualcomm Inc</span>
-    </div>
-    <div class="meta">
-      <span><em>Team Name</em>Drone Syndicate</span>
-      <span><em>Team ID</em>&nbsp;</span>
-    </div>
-  </div>
-  <div class="stats">
-    <div><b>5.8 h</b><span>to sweep the 15 km² Wayanad footprint, against <i>5+ days</i> for 1,300 responders</span></div>
-    <div><b>+64</b><span>survivors per 100 trapped, from reaching them inside the six-hour window</span></div>
-    <div><b>&#8377;502</b><span>per km² surveyed &mdash; <i>27&times;</i> cheaper than a charter helicopter</span></div>
-  </div>
-  <img class="hero h1" src="img/c4-swarm.jpg">
-  <img class="hero h2" src="img/s1-one-drone.png">
-  <div class="hcap c1">SIX SCOUTS, ONE TRUCK — 15 km² IN 5.8 HOURS</div>
-  <div class="hcap c2">ONE SCOUT — COMPLETE WITH THE TRUCK SWITCHED OFF</div>
-  <div class="bar"></div><div class="ft">@SIH Idea submission</div>
+  <img class="tlogo" src="img/sih-logo.png">
+  <img class="tmark" src="img/sih-mark.png">
+  <h1 class="tev">SMART INDIA HACKATHON 2026</h1>
+  <div class="tsub">TITLE PAGE</div>
+  <ul class="tlist">
+    <li><b>Problem Statement ID</b> &ndash; 26177</li>
+    <li><b>Problem Statement Title</b> &ndash; A deployable AI-powered autonomous drone that aids
+        search-and-rescue operations by detecting people and hazards, thereby improving responder
+        safety and reducing victim discovery time.</li>
+    <li><b>Theme</b> &ndash; Robotics and Drones</li>
+    <li><b>PS Category</b> &ndash; Hardware</li>
+    <li><b>Team ID</b> &ndash; </li>
+    <li><b>Team Name</b> &ndash; Drone Syndicate</li>
+  </ul>
 </section>''')
 
 # ---------------------------------------------------------------- 2 SOLUTION
@@ -99,7 +83,7 @@ b += img("img/s1-one-drone.png", M, R1_Y, COL, R1_H)
 b += img("img/c4-swarm.jpg",     M+COL+GAP, R1_Y, COL, R1_H, "cover")
 IW = R2_H*1.778
 b += lab("③ THE IDEA NOBODY HAS USED", M, R2_LAB, IW)
-b += lab("PROPOSED SOLUTION — REQUIRED POINTERS", M+IW+GAP, R2_LAB, CW-IW-GAP)
+b += el("shead", M+IW+GAP, R2_LAB-0.03, CW-IW-GAP, 0.20, "&#10022; <u>Proposed Solution</u> (Describe your Idea/Solution/Prototype)")
 b += img("img/f1-sachet.png", M, R2_Y, IW, R2_H)
 b += el("tx", M+IW+GAP, R2_Y, CW-IW-GAP, R2_H, bullets([
   ("Detailed explanation —",
@@ -127,7 +111,7 @@ b += img("img/s2-loop.png",   M, R1_Y, COL, R1_H)
 b += img("img/f2-buried.png", M+COL+GAP, R1_Y, COL, R1_H)
 QW = 1.02
 b += lab("RUNS IN THE JUDGE'S BROWSER", M, R2_LAB, QW*2)
-b += lab("TECHNICAL APPROACH — REQUIRED POINTERS", M+QW*2+GAP, R2_LAB, CW-QW*2-GAP)
+b += el("shead", M+QW*2+GAP, R2_LAB-0.03, CW-QW*2-GAP, 0.20, "&#10022; <u>Technical Approach</u>")
 b += img("img/qr-demo.png", M, R2_Y, QW, QW)
 b += el("qc", M, R2_Y+QW+0.03, QW*2, 0.30,
         "<b>Live demo</b><br>hf.co/spaces/anshumanatrey/<br>kestrel-survivor-detection")
@@ -162,7 +146,7 @@ b += lab("② WHAT IT COSTS AGAINST THE ALTERNATIVE", M+COL+GAP, R1_LAB, COL)
 b += img("img/r3-alternatives.png", M, R1_Y, COL, R1_H)
 b += img("img/f4-cost.png",         M+COL+GAP, R1_Y, COL, R1_H)
 b += lab("③ WHEN PIECES FAIL", M, R2_LAB, IW)
-b += lab("FEASIBILITY AND VIABILITY — REQUIRED POINTERS", M+IW+GAP, R2_LAB, CW-IW-GAP)
+b += el("shead", M+IW+GAP, R2_LAB-0.03, CW-IW-GAP, 0.20, "&#10022; <u>Feasibility and Viability</u>")
 b += img("img/f5-degrade.png", M, R2_Y, IW, R2_H)
 b += el("tx", M+IW+GAP, R2_Y, CW-IW-GAP, R2_H, bullets([
   ("Feasibility —",
@@ -191,7 +175,7 @@ b += lab("② WHAT THE COMMANDER SEES — ON-DEVICE, NO NETWORK", M+COL+GAP, R1_
 b += img("img/r1-survival.png",  M, R1_Y, COL, R1_H)
 b += img("img/p5-dashboard.jpg", M+COL+GAP, R1_Y, COL, R1_H, "cover")
 b += lab("③ WHAT IT IS ALL FOR", M, R2_LAB, IW)
-b += lab("IMPACT AND BENEFITS — REQUIRED POINTERS", M+IW+GAP, R2_LAB, CW-IW-GAP)
+b += el("shead", M+IW+GAP, R2_LAB-0.03, CW-IW-GAP, 0.20, "&#10022; <u>Impact and Benefits</u>")
 b += img("img/c6-void.jpg", M, R2_Y, IW, R2_H, "cover")
 b += el("tx", M+IW+GAP, R2_Y, CW-IW-GAP, R2_H, bullets([
   ("Impact on the target audience —",
@@ -299,13 +283,14 @@ html,body{margin:0;padding:0;background:#fff;
  border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;
  font-size:8.4pt;font-weight:700;line-height:1.14;color:#0f2038}
 .slogo{left:11.72in;top:.1in;width:1.34in}
-.bar{position:absolute;left:0;top:6.95in;width:13.333in;height:.55in;
- background:linear-gradient(90deg,#0070C0 0 62%,#8C8C8C 62% 81%,#C0504D 81% 100%)}
+.bar{left:0;top:6.95in;width:13.333in;height:.55in;background:#0070C0}
 .ft{position:absolute;left:.3in;top:7.06in;font-size:8pt;color:#fff;letter-spacing:.02em}
 .pg{position:absolute;right:.32in;top:7.05in;font-size:11pt;color:#fff;font-weight:700}
-.ab,.tb,.bar,.ft,.pg,.logo,.tw,.hero,.hcap,.stats,.oval,.slogo{position:absolute}
+.ab,.tb,.bar,.ft,.pg,.oval,.slogo{position:absolute}
 .key{font-size:11.2pt;line-height:1.2;color:#0070C0;display:flex;align-items:center;
  border-left:.035in solid #0070C0;padding-left:.11in}
+.shead{font-size:9pt;font-weight:700;color:#1F497D;letter-spacing:.005em;
+ overflow:hidden;white-space:nowrap}
 .lab{font-size:7.3pt;font-weight:700;letter-spacing:.055em;color:#5b6b83;
  text-transform:uppercase;overflow:hidden;white-space:nowrap}
 .im{overflow:hidden;border:.008in solid #d6dde8;border-radius:.035in;background:#fff}
@@ -338,32 +323,19 @@ html,body{margin:0;padding:0;background:#fff;
 .tbl td{font-size:7.4pt;padding:.036in .07in;border-bottom:.006in solid #e3e8ef;color:#25344d}
 .tbl tr.hi td{background:#eef6fc}
 .tbl tr.mu td{color:#7c8aa0;font-style:italic}
-/* ---- title slide ---- */
+/* ---- title slide: matched to the template's own layout ---- */
 .title{display:block}
-.logo{left:.6in;top:.58in;width:2.95in}
-.tw{left:.6in;top:2.05in;width:6.55in}
-.hero{left:7.42in;width:5.31in;object-fit:contain;background:#fff;
- border-radius:.035in;border:.008in solid #d6dde8}
-.h1{top:.72in;height:2.99in}
-.h2{top:4.02in;height:2.62in}
-.hcap{position:absolute;left:7.42in;width:5.31in;font-size:7.3pt;font-weight:700;
- letter-spacing:.055em;color:#5b6b83;text-transform:uppercase}
-.c1{top:.54in}.c2{top:3.84in}
-.rule{height:.022in;background:#0070C0;width:1.5in;margin:.04in 0 .22in}
-.stats{position:absolute;left:.6in;top:5.28in;width:6.55in;display:flex;gap:.3in}
-.stats>div{flex:1;border-top:.022in solid #0070C0;padding-top:.1in}
-.stats b{display:block;font-size:20pt;line-height:1;color:#0f2038;
- font-family:"Times New Roman",Times,serif}
-.stats span{display:block;margin-top:.06in;font-size:7.4pt;line-height:1.3;color:#5b6b83}
-.ev{font-size:9.5pt;font-weight:700;letter-spacing:.16em;color:#0070C0;margin-bottom:.16in}
-.pt{font-family:"Times New Roman",Times,serif;font-size:17.5pt;font-weight:700;
- line-height:1.28;margin:0;color:#0f2038}
-.meta{display:flex;gap:.4in;font-size:8.8pt;color:#25344d;margin-bottom:.17in}
-.meta span{flex:1}
-.meta em{display:block;font-style:normal;font-size:7pt;font-weight:700;letter-spacing:.09em;
- text-transform:uppercase;color:#7c8aa0;margin-bottom:.028in}
-.meta span{border-left:.022in solid #0070C0;padding-left:.13in}
-
+.tlogo{position:absolute;right:.42in;top:.24in;width:2.15in}
+.tmark{position:absolute;right:1.62in;top:1.62in;width:3.45in;opacity:.95}
+.tev{position:absolute;left:0;top:.30in;width:13.333in;text-align:center;margin:0;
+ font-family:"Times New Roman",Times,serif;font-size:31pt;font-weight:700;color:#1F497D}
+.tsub{position:absolute;left:0;top:1.28in;width:13.333in;text-align:center;
+ font-family:"Times New Roman",Times,serif;font-size:23pt;font-weight:700;color:#0f2038}
+.tlist{position:absolute;left:.78in;top:2.42in;width:7.05in;margin:0;padding:0;list-style:none}
+.tlist li{font-size:12.4pt;line-height:1.34;color:#111;margin-bottom:.20in;
+ padding-left:.26in;text-indent:-.26in}
+.tlist li::before{content:"•  ";font-weight:700}
+.tlist b{font-weight:700}
 """
 out = ("<!doctype html><html><head><meta charset='utf-8'><title>Kestrel — SIH 2026</title>"
        f"<style>{CSS}</style></head><body>" + "".join(S) + "</body></html>")
