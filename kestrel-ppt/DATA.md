@@ -1470,7 +1470,7 @@ The browser executes the **SARD-trained** detector, not stock COCO. The head is 
 output is `[1,5,8400]`; `app.js` reads the class count at runtime and only falls back to COCO names
 if a multi-class model is ever swapped back, so the page cannot silently mislabel later.
 
-## 36. The flight `[IN PROGRESS]`
+## 36. The flight `[PUBLIC — review.px4.io]`
 
 PX4 SITL flew the §21 profile and the ULog confirms it: **max altitude 30.0 m** against a 30 m spec,
 **mean ground speed 3.8 m/s** against 4.0, and an extent of **220 m north by 90 m east** — four lanes
@@ -1480,3 +1480,22 @@ It did not upload: **439 MB, and `review.px4.io` returns 413.** Speed factor 4 l
 simulated time and the default `SDLOG_PROFILE` includes estimator replay, which was ~964k samples on
 its own. Re-running at speed factor 1 with `SDLOG_PROFILE=1` and `SDLOG_MODE=0` (arm-to-disarm).
 **The flight is real; only the file size was wrong.**
+
+**Second run uploaded.** GitHub Actions run `35199743645`, PX4 v1.15.4, jMAVSim headless,
+speed factor 1, `SDLOG_PROFILE=1`, `SDLOG_MODE=0`. ULog 140 MB uncompressed, 45 MB as artifact.
+
+**Public link, no login:** https://review.px4.io/plot_app?log=fe88f4b8-f677-4e81-8b96-e6512ebe8af2
+
+| Spec (§21) | Second-run log |
+|---|---|
+| 30 m AGL | **30.0 m** max altitude |
+| 4.0 m/s | **3.8 m/s** mean, 4.2 max |
+| 4 lanes × 220 m at 30 m spacing | **220 m N × 90 m E** |
+| duration | 618 s, arm to disarm |
+
+**Honest caveat on the GPS-denied segment.** `fly_survey.py` blocks GPS from t+150 s to t+260 s via
+`SIM_GPS_BLOCK`. The log shows only **160 no-fix samples of 11,860 (1%)** — far short of a 110 s
+window. jMAVSim almost certainly does not honour that parameter the way Gazebo does. **The deck does
+not claim a GPS-denied demonstration from this log**, and should not until the block is reproduced
+on a simulator that implements it. The flight profile itself — altitude, speed, lane geometry — is
+exact.

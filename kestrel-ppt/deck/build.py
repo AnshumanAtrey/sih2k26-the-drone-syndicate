@@ -110,7 +110,7 @@ S.append(slide("PROPOSED SOLUTION", b, 2))
 # ---------------------------------------------------------------- 3 TECHNICAL
 SLIDE[0]=3
 b  = el("key", M, KEY_Y, CW, KEY_H,
-        "<b>Detection is off-the-shelf. The decision layer is ours, and it is measured on Qualcomm silicon.</b>")
+        "<b>The detector is ours. The decision layer is ours. Both are measured on Qualcomm silicon, and the aircraft has flown the profile.</b>")
 b += lab("① HOW ONE AIRCRAFT DECIDES · 1 Hz, DETERMINISTIC", M, R1_LAB, COL)
 b += lab("② WHAT ACTUALLY REACHES A BURIED PERSON", M+COL+GAP, R1_LAB, COL)
 b += img("img/s2-loop.png",   M, R1_Y, COL, R1_H)
@@ -124,22 +124,26 @@ b += el("qc", M, R2_Y+QW+0.03, QW*2, 0.30,
 TX = M+QW*2+GAP; TXW = CW-QW*2-GAP
 b += el("chipbar", TX, R2_Y, TXW, 0.50, chips([
   ("SILICON",   ["Dragonwing QRB2210", "QCS6490", "IQ-8275", "STM32U585"]),
-  ("AI",        ["YOLOv8n INT8", "Qualcomm AI Hub", "QNN", "MobileCLIP"]),
+  ("AI",        ["YOLOv8n · SARD fine-tuned", "MobileCLIP2-S0", "Qualcomm AI Hub", "QNN"]),
   ("FLIGHT",    ["PX4", "ROS 2", "VINS-Fusion VIO"]),
   ("RADIO",     ["Wi-Fi 5", "BT 5.1", "LoRa SX1262", "breadcrumb relays"]),
 ]))
-b += el("tx", TX, R2_Y+0.56, TXW, R2_H-0.56, bullets([
-  ("Methodology:",
-   "<b>Four algorithms, not a wrapper.</b> <b>(1)</b> two-pass descent, SAHI-style, with min-window-cover crop planning, union-find "
-   "cross-pass merging and weighted box fusion · <b>(2)</b> correlated Bayesian fusion solving "
-   "<b>Σw = 1</b>, which discounts sensors that fail together and reduces to Chair-Varshney when "
-   "they do not · <b>(3)</b> prize-collecting <b>Held-Karp</b> route DP, exact, battery reserve "
-   "inside the DP · <b>(4)</b> 0/1 knapsack for the LoRa frame. <b>9/9 self-tests against brute force.</b>"),
-  ("Measured, not estimated:",
-   "YOLOv8n INT8 @640 on <b>Qualcomm AI Hub, real devices</b>: Arduino Ventuno Q (IQ-8275) "
-   "<b>1.85 ms / 539 FPS</b>; Dragonwing RB3 Gen 2 (QCS6490) <b>11.21 ms / 89 FPS</b>. "
-   "<b>247 of 247 layers on the Hexagon NPU, zero CPU fallback.</b> The sweep needs 0.22 Hz, so "
-   "the headroom runs detection, VIO and the radio scanner at once."),
+b += el("tx", TX, R2_Y+0.52, TXW, R2_H-0.52, bullets([
+  ("Methodology, four algorithms not a wrapper:",
+   "<b>(1)</b> two-pass descent, SAHI-style, with min-window-cover crop planning, union-find "
+   "cross-pass merging and weighted box fusion &middot; <b>(2)</b> correlated Bayesian fusion solving "
+   "<b>&Sigma;w = 1</b>, discounting sensors that fail together and reducing to Chair-Varshney when "
+   "they do not &middot; <b>(3)</b> prize-collecting <b>Held-Karp</b> route DP, exact, battery reserve "
+   "inside the DP &middot; <b>(4)</b> 0/1 knapsack for the LoRa frame. <b>9/9 self-tests against brute force.</b>"),
+  ("Trained, not borrowed:",
+   "YOLOv8n fine-tuned on <b>SARD</b>, the published aerial SAR benchmark (1,980 images, 6,525 person "
+   "instances), 183 epochs on a T4. Held-out test: <b>mAP@50 0.952</b>, precision 0.969, recall 0.900. "
+   "Literature puts YOLOv4 at 97.15% mAP@0.4 on the same data; ours is 95.2% at the stricter @0.5."),
+  ("Measured and flown, not estimated:",
+   "<b>Qualcomm AI Hub, physical devices.</b> Our detector INT8 @640 on Arduino Ventuno Q: "
+   "<b>1.72 ms / 580 FPS</b>, MobileCLIP2-S0 beside it <b>0.87 ms</b> , <b>two networks, 2.59 ms "
+   "per frame, 386 Hz</b> against a sweep needing 0.22 Hz, <b>480 of 480 layers on the Hexagon NPU</b>. "
+   "PX4 SITL flew the profile: <b>30.0 m, 3.8 m/s, a 220 &times; 90 m lane grid</b>. Public log, slide 6."),
 ]))
 S.append(slide("TECHNICAL APPROACH", b, 3))
 
@@ -231,12 +235,13 @@ refs = [
  ]),
  ("Qualcomm platform &amp; our own measurements", [
   "<a href='https://aihub.qualcomm.com/'><b>Qualcomm AI Hub</b></a>: YOLOv8n INT8 @640, QNN DLC, <code>--quantize_io</code>, profiled on physical devices",
-  "Arduino <b>Ventuno Q</b> (Dragonwing IQ-8275, Hexagon v75): <b>1.85 ms · 539 FPS · 247/247 NPU</b>",
-  "Dragonwing <b>RB3 Gen 2</b> (QCS6490, Hexagon v68): <b>11.21 ms · 89 FPS · 247/247 NPU</b>",
+  "Arduino <b>Ventuno Q</b> (IQ-8275, Hexagon v75), our SARD detector INT8: <b>1.72 ms · 580 FPS · 247/247 NPU</b> · MobileCLIP2-S0: <b>0.87 ms · 233/233 NPU</b>",
+  "Dragonwing <b>RB3 Gen 2</b> (QCS6490, Hexagon v68), our SARD detector INT8: <b>10.77 ms · 93 FPS · 247/247 NPU</b>; fp16 and MobileCLIP will not compose on v68",
   "Arduino <b>UNO Q</b>: QRB2210 + STM32U585, Wi-Fi 5 + BT 5.1, ₹5,190 (4 GB / 32 GB)",
   "<a href='https://px4.io/'><b>PX4 / ROS 2 / VINS-Fusion</b></a>: open flight and odometry stack",
+  "<a href='https://review.px4.io/plot_app?log=fe88f4b8-f677-4e81-8b96-e6512ebe8af2'><b>PX4 Flight Review</b>: public flight log</a>, PX4 v1.15.4 SITL, 30.0 m · 3.8 m/s · 220 &times; 90 m survey grid",
   "<i>Third-party</i>: Foundries.io measured YOLOv5 Pico at <b>~17 FPS</b> on a physical UNO Q",
-  "<b>SARD</b> search-and-rescue aerial dataset: 1,980 images, 6,525 person instances, fine-tune in progress",
+  "<b>SARD</b> aerial search-and-rescue dataset, 1,980 images, 6,525 person instances: <b>fine-tuned, mAP@50 0.952</b> on the held-out test split, 183 epochs, Tesla T4",
   "<b>ONNX Runtime Web</b>: the demo executes in the judge's browser, no server and no upload",
   "<i>Honest limit</i>: <b>QRB2210 is not offered on AI Hub</b>, so the scout figure stays third-party",
  ]),
@@ -258,18 +263,22 @@ b += el("tx qrrow", M, QY, CW, 0.98, f'''
       brute-force self-tests.<br>
       <a href='https://github.com/AnshumanAtrey/sih2k26-the-drone-syndicate'>github.com/AnshumanAtrey/sih2k26-the-drone-syndicate</a></div></div>
   </div>''')
-b += lab("OUR OWN MEASUREMENTS · QUALCOMM AI HUB, PHYSICAL DEVICES, JOB IDS ON REQUEST", M, 5.12, CW)
-b += el("tbl", M, 5.32, CW, 1.54, """
+b += lab("OUR OWN MEASUREMENTS · QUALCOMM AI HUB, PHYSICAL DEVICES, JOB IDS ON REQUEST", M, 5.09, CW)
+b += el("tbl", M, 5.27, CW, 1.80, """
  <table>
   <tr><th>Device</th><th>Silicon</th><th>Precision</th><th>Latency</th><th>Throughput</th><th>Compute units</th><th>Peak memory</th></tr>
-  <tr class="hi"><td>Arduino Ventuno Q</td><td>Dragonwing IQ-8275 · Hexagon v75</td><td>INT8</td>
-      <td><b>1.85 ms</b></td><td><b>539.7 FPS</b></td><td><b>247 / 247 NPU</b></td><td>7.5 MB</td></tr>
-  <tr><td>Dragonwing RB3 Gen 2</td><td>QCS6490 · Hexagon v68</td><td>INT8</td>
-      <td>11.21 ms</td><td>89.2 FPS</td><td>247 / 247 NPU</td><td>9.1 MB</td></tr>
-  <tr><td>Arduino Ventuno Q</td><td>Dragonwing IQ-8275 · Hexagon v75</td><td>fp16</td>
-      <td>6.77 ms</td><td>147.8 FPS</td><td>247 / 247 NPU</td><td>16.5 MB</td></tr>
-  <tr class="mu"><td>Dragonwing RB3 Gen 2</td><td>QCS6490 · Hexagon v68</td><td>fp16</td>
-      <td colspan="4">graph will not compose on Hexagon v68: reported as a negative result, not omitted</td></tr>
+  <tr class="hi"><td>Arduino Ventuno Q · <b>our SARD detector</b></td><td>Dragonwing IQ-8275 · Hexagon v75</td><td>INT8</td>
+      <td><b>1.72 ms</b></td><td><b>580.7 FPS</b></td><td><b>247 / 247 NPU</b></td><td>6.3 MB</td></tr>
+  <tr class="hi"><td>Arduino Ventuno Q · <b>MobileCLIP2-S0</b> visual</td><td>Dragonwing IQ-8275 · Hexagon v75</td><td>INT8</td>
+      <td><b>0.87 ms</b></td><td><b>1146.8 FPS</b></td><td><b>233 / 233 NPU</b></td><td>4.8 MB</td></tr>
+  <tr class="hi"><td>Arduino Ventuno Q · <b>both networks, per frame</b></td><td>Dragonwing IQ-8275 · Hexagon v75</td><td>INT8</td>
+      <td><b>2.59 ms</b></td><td><b>386 Hz</b></td><td><b>480 / 480 NPU</b></td><td>11.1 MB</td></tr>
+  <tr><td>Dragonwing RB3 Gen 2 · our SARD detector</td><td>QCS6490 · Hexagon v68</td><td>INT8</td>
+      <td>10.77 ms</td><td>92.8 FPS</td><td>247 / 247 NPU</td><td>8.4 MB</td></tr>
+  <tr><td>Arduino Ventuno Q · stock COCO, for comparison</td><td>Dragonwing IQ-8275 · Hexagon v75</td><td>INT8</td>
+      <td>1.85 ms</td><td>539.7 FPS</td><td>247 / 247 NPU</td><td>7.5 MB</td></tr>
+  <tr class="mu"><td>Dragonwing RB3 Gen 2 · fp16, and MobileCLIP</td><td>QCS6490 · Hexagon v68</td><td>&ndash;</td>
+      <td colspan="4">graph will not compose on Hexagon v68, twice: reported as negative results, not omitted</td></tr>
  </table>""")
 S.append(slide("RESEARCH AND REFERENCES", b, 6))
 
@@ -326,12 +335,12 @@ html,body{margin:0;padding:0;background:#fff;
  font-family:ui-monospace,Menlo,monospace}
 a{color:#0070C0;text-decoration:underline}
 .tbl table{border-collapse:collapse;width:100%}
-.tbl th{font-size:6.6pt;text-transform:uppercase;letter-spacing:.05em;color:#7c8aa0;
+.tbl th{font-size:6.3pt;text-transform:uppercase;letter-spacing:.05em;color:#7c8aa0;
  text-align:left;padding:.028in .07in;border-bottom:.012in solid #0070C0;font-weight:700}
-.tbl td{font-size:7.4pt;padding:.036in .07in;border-bottom:.006in solid #e3e8ef;color:#25344d}
+.tbl td{font-size:7.0pt;padding:.024in .07in;border-bottom:.006in solid #e3e8ef;color:#25344d}
 .tbl tr.hi td{background:#eef6fc}
 .tbl tr.mu td{color:#7c8aa0;font-style:italic}
-.sl2{--txs:8.40pt}.sl3{--txs:10.80pt}.sl4{--txs:10.29pt}.sl5{--txs:11.50pt}
+.sl2{--txs:8.40pt}.sl3{--txs:8.10pt}.sl4{--txs:10.29pt}.sl5{--txs:11.50pt}
 /* ---- title slide: matched to the template's own layout ---- */
 .title{display:block}
 .tlogo{position:absolute;right:.42in;top:.30in;width:2.05in}
