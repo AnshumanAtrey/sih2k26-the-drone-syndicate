@@ -1267,6 +1267,7 @@ it is the thing that proves the compute core is the product and the airframe is 
 
 ## 26. Addendum 5 TODO
 
+- [x] ~~AI Hub profile~~ **DONE — Addendum 6 §27, four jobs on real silicon**
 - [ ] **Everything in [`DEMO-PLAN.md`](DEMO-PLAN.md)** — the public link judges open. Tasks unclaimed.
 - [ ] **Profile YOLOv8n INT8 @640 on QRB2210 via Qualcomm AI Hub** — replace Foundries.io's YOLOv5
       Pico number with our own model on our own silicon. Free, no hardware needed. **Highest value
@@ -1276,3 +1277,121 @@ it is the thing that proves the compute core is the product and the airframe is 
 - [ ] Re-order slides 2 and 3 per §19: **slide 2 = the system, slide 3 = one drone.**
 - [ ] Propagate §18b + §20a BOM into `slides/` — slide 3 and slide 4 still carry the superseded §7
       recycled-handset BOM.
+
+---
+---
+
+# ADDENDUM 6 — 17 Sep 2026 · MEASURED, BUILT, SHIPPED
+
+Three days to the deadline. This addendum records what stopped being an estimate.
+**Everything the submission deck asserts is traceable from here.**
+
+## 27. Qualcomm AI Hub — our own measurements `[SOURCED — physical devices, job IDs below]`
+
+YOLOv8n, 640×640, compiled to QNN DLC and profiled on **real hardware in Qualcomm's cloud**.
+Not a simulator, not a vendor claim.
+
+| Device | Silicon | Precision | Latency | Throughput | Compute units | Peak mem | Job ID |
+|---|---|---|---|---|---|---|---|
+| **Arduino Ventuno Q** | Dragonwing IQ-8275 · Hexagon **v75** | **INT8** | **1.85 ms** | **539.7 FPS** | **247/247 NPU** | 7.5 MB | `jg9zwqqmp` |
+| Dragonwing RB3 Gen 2 | QCS6490 · Hexagon **v68** | INT8 | 11.21 ms | 89.2 FPS | 247/247 NPU | 9.1 MB | `jgzlr0045` |
+| Arduino Ventuno Q | IQ-8275 · v75 | fp16 | 6.77 ms | 147.8 FPS | 247/247 NPU | 16.5 MB | `j5wlqrr4p` |
+| Dragonwing RB3 Gen 2 | QCS6490 · v68 | fp16 | **fails** | — | — | — | — |
+
+**Every layer on the Hexagon NPU. Zero CPU fallback.** That split is the number a Qualcomm engineer
+checks first, and it is why we report compute units rather than only latency.
+
+**Three findings worth keeping:**
+
+1. **`--quantize_io` is worth 35%.** Without it the Ventuno INT8 ran **2.84 ms** (`jp0mlx90g`); with it,
+   **1.85 ms**. The flag keeps the int↔float conversion outside the model so the NPU is not doing it.
+   Documented in AI Hub's quantize guide and easy to miss.
+2. **fp16 will not compose on Hexagon v68.** `QnnModel_composeGraphsFromDlc: MODEL_GRAPH_ERROR`, twice,
+   including with the documented `default_graph_htp_precision=FLOAT16` flag. The Ventuno's v75
+   advertises `htp-supports-fp16:true`; the RB3's v68 does not. **Reported as a negative result on
+   slide 6 rather than omitted.**
+3. **The HF ONNX export was malformed.** `output0` appeared in both `value_info` and graph IO, which
+   failed the first three jobs. Stripping the duplicate fixed it. Our own export path now does this.
+
+## 27a. §26 TODO closed with a NEGATIVE result: QRB2210 is not profileable `[SOURCED]`
+
+Addendum 3 §17 and Addendum 5 §26 both said one number would decide the scout brain.
+**That number cannot be obtained.** AI Hub offers 63 chipsets and **QRB2210 is not among them**:
+
+```
+2210 found: False
+```
+
+So the scout's throughput stays a **third-party** figure — Foundries.io's ~17 FPS for YOLOv5 Pico on a
+physical UNO Q. The deck says so in those words. We do not launder someone else's benchmark as ours.
+
+## 27b. Base station: RB3 Gen 2 → **Arduino Ventuno Q** `[DECIDED 17 Sep]`
+
+| | RB3 Gen 2 (was specced) | **Ventuno Q** (now) |
+|---|---|---|
+| YOLOv8n INT8 @640 | 11.21 ms | **1.85 ms — 6× faster** |
+| NPU | 12 TOPS, Hexagon v68 | **40 TOPS, Hexagon v75** |
+| RAM / storage | 6 GB / 128 GB | **16 GB LPDDR5 / 64 GB + M.2 NVMe** |
+| Wireless | — | Wi-Fi 6 + 2.5GbE |
+| Real-time MCU | none | **STM32H5** |
+| Price | ₹50,000 | **≈ ₹26,000 ($299)** |
+
+**Half the price, 3× the TOPS, 6× the measured throughput** — and it is an *Arduino* board, so
+"every compute node is a Qualcomm-owned Arduino product" becomes true for the base station too.
+`[VERIFY]` India pricing and availability before the finale BOM is final.
+
+## 28. The four algorithms — ours, not YOLO's `[BUILT · 9/9 self-tests]`
+
+`demo/kestrel.js`. YOLO returns boxes; this turns boxes into a search decision.
+
+| Algorithm | Structures | Complexity | Grounded in |
+|---|---|---|---|
+| Two-pass descent | min-window-cover · spatial hash · union-find · WBF | O(n log n) plan, O(n α(n)) merge | SAHI arXiv 2202.06934 (+6.8% AP VisDrone) · WBF arXiv 1910.13302 |
+| Correlated fusion | sparse Map, packed int keys · adaptive-ridge Gauss-Jordan | O(1)/update, O(k³) k≤8 | generalises Chair-Varshney 1986 |
+| Route planning | prize-collecting bitmask DP | O(2^k·k²), k≤15 | Held-Karp, return-to-base inside the DP |
+| Link budget | 1-D rolling knapsack + choice table | O(n·B) | §23 record sizes |
+
+**The fusion result is the one for the slide.** At r=0.85 the weights solve to
+`rgb 0.632 · descent 0.632 · thermal 0.158 · ble 1.000` — the correlated cluster collapses while the
+independent stream holds full weight. **§11's "one vote in two coats" is now a number, not a slogan.**
+
+Two bugs the integration test caught that unit tests missed, both recorded because they are the kind
+that ship silently:
+- Raw GLS handed a near-collinear stream a **negative** weight (−1.362). Correct for minimum-variance
+  estimation, meaningless as evidence. Fixed with the smallest Tikhonov ridge keeping weights
+  non-negative; λ=0 is tried first so the Chair-Varshney reduction still holds exactly.
+- `(v << 16)` **overflows int32** for v > 32767 and JS sign-extends on `>>`, so every positive grid
+  coordinate decoded to −65511 and the route planner correctly reported nothing reachable. Packing is
+  now plain arithmetic, exact to 2^53.
+
+## 29. The public link `[LIVE]`
+
+**https://huggingface.co/spaces/anshumanatrey/kestrel-survivor-detection**
+
+Static Space — YOLOv8n and all four algorithms execute **in the judge's browser** via ONNX Runtime
+Web. No server, no login, no cold start. That is itself a demonstration of the PS's *"on-device AI
+inference without dependence on cloud connectivity"* bullet, on the judge's own hardware.
+
+Free Gradio Spaces now require PRO (402 on create); free ZeroGPU is **3.5 min/day**. The paywall
+pushed us to WASM, which is the better answer. Serving now costs nothing, forever.
+
+## 30. The deck `[SHIPPED]`
+
+`deck/KESTREL-SIH26177-idea-submission.pdf` — 6 pages, 13.333 × 7.5 in, ~10 MB.
+Generated by `deck/build.py`, so **overlap is a computed assertion**: 0 declared overlaps, 0 rendered
+image/text collisions, 0 boxes past the bar, 0 em-dashes, 11 clickable reference links.
+
+Format checked against **six actual winning decks**, not assumptions. 6/6 keep the team oval and a
+centred serif title; 5/6 keep the SIH logo and bottom bar; **0/6 use the template's page size.**
+Full analysis in `deck/README.md`.
+
+## 31. Addendum 6 TODO — what is actually left
+
+- [ ] **Team ID** on slide 1 — only the portal has it
+- [ ] **PX4 SITL → public `review.px4.io` link.** Still the largest gap: we are Hardware category and
+      every artifact so far is software. This is the only one that proves *flight*
+- [ ] SARD fine-tune → swap ONNX into the Space, **re-profile on AI Hub with our own weights**, and
+      slide 3's numbers stop describing stock COCO
+- [ ] `slides/` markdown is **superseded** by `deck/` and still carries the §7 BOM — reconcile or retire
+- [ ] Confirm the SIH portal's PDF size cap; we are at ~10 MB and can reach <8 MB by recompressing
+      photographic panels without touching layout
