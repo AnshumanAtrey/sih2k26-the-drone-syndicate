@@ -68,7 +68,7 @@ S.append(f'''<section class="s title">
         safety and reducing victim discovery time.</li>
     <li><b>Theme</b> &ndash; Robotics and Drones</li>
     <li><b>PS Category</b> &ndash; Hardware</li>
-    <li><b>Team ID</b> &ndash; </li>
+    <li><b>Team ID</b> &ndash; 133478</li>
     <li><b>Team Name</b> &ndash; Drone Syndicate</li>
   </ul>
 </section>''')
