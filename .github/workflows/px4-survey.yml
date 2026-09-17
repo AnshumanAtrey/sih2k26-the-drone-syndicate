@@ -43,7 +43,8 @@ jobs:
       - name: Fly the survey
         run: |
           cd px4
-          export HEADLESS=1 PX4_SIM_SPEED_FACTOR=4
+          # speed factor 1: at 4x the log covered 32 min of sim time and hit 439 MB
+          export HEADLESS=1 PX4_SIM_SPEED_FACTOR=1
           nohup make px4_sitl jmavsim > /tmp/sitl.log 2>&1 &
           for i in $(seq 1 120); do
             grep -q "Ready for takeoff" /tmp/sitl.log && break
@@ -61,6 +62,11 @@ jobs:
           find px4/build/px4_sitl_default/rootfs/log -name '*.ulg' -exec cp {} out/ \; || true
           ls -la out/ || echo "NO LOGS FOUND"
           python3 tools/inspect_ulog.py 'out/*.ulg' || true
+          for f in out/*.ulg; do
+            sz=$(stat -c%s "$f")
+            echo "$f is $((sz/1024/1024)) MB"
+            [ "$sz" -gt 104857600 ] && echo "WARNING: over Flight Review's ~100 MB limit"
+          done
           echo "--- sitl tail ---"
           tail -40 /tmp/sitl.log
 

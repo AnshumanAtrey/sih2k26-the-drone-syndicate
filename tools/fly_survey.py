@@ -54,8 +54,19 @@ def main():
     home = (g.lat/1e7, g.lon/1e7)
     print(f"home {home}", flush=True)
 
-    m.mav.param_set_send(m.target_system, m.target_component, b'MPC_XY_CRUISE',
-                         SPEED, mavutil.mavlink.MAV_PARAM_TYPE_REAL32)
+    # Flight Review's nginx rejects >~100 MB. The first run produced 439 MB because
+    # it logged 32 min of sim time with estimator replay on. SDLOG_PROFILE=1 drops
+    # the replay topics (estimator_states, ekf2_timestamps, estimator_status were
+    # ~964k of the samples) and SDLOG_MODE=0 logs only arm..disarm rather than from
+    # boot, so the log is the flight and nothing else.
+    for name, val, typ in [
+        (b'SDLOG_PROFILE', 1, mavutil.mavlink.MAV_PARAM_TYPE_INT32),
+        (b'SDLOG_MODE',    0, mavutil.mavlink.MAV_PARAM_TYPE_INT32),
+        (b'MPC_XY_CRUISE', SPEED, mavutil.mavlink.MAV_PARAM_TYPE_REAL32),
+    ]:
+        m.mav.param_set_send(m.target_system, m.target_component, name, val, typ)
+        time.sleep(0.4)
+    print("logging trimmed: SDLOG_PROFILE=1, SDLOG_MODE=0 (arm..disarm)", flush=True)
     upload(m, home)
 
     m.set_mode_apm if False else None
