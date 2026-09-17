@@ -76,36 +76,42 @@ S.append(f'''<section class="s title">
 # ---------------------------------------------------------------- 2 SOLUTION
 SLIDE[0]=2
 b  = el("key", M, KEY_Y, CW, KEY_H,
-        "<b>At Wayanad, 206 people were never found. Not because nobody looked &mdash; because 1,300 responders could not cover 15 km&sup2; before the window closed.</b>")
-b += lab("① ONE AIRCRAFT — COMPLETE WITH THE TRUCK SWITCHED OFF", M, R1_LAB, COL)
-b += lab("② SIX OF THEM — 15 km² SWEPT IN 5.8 HOURS", M+COL+GAP, R1_LAB, COL)
+        "<b>At Wayanad, 206 people were never found. Not because nobody looked. It was because 1,300 responders could not cover 15 km&sup2; before the window closed.</b>")
+b += lab("① ONE AIRCRAFT · COMPLETE WITH THE TRUCK SWITCHED OFF", M, R1_LAB, COL)
+b += lab("② SIX OF THEM · 15 km² SWEPT IN 5.8 HOURS", M+COL+GAP, R1_LAB, COL)
 b += img("img/s1-one-drone.png", M, R1_Y, COL, R1_H)
 b += img("img/c4-swarm.jpg",     M+COL+GAP, R1_Y, COL, R1_H, "cover")
 IW = R2_H*1.778
-b += lab("③ THE IDEA NOBODY HAS USED", M, R2_LAB, IW)
-b += el("shead", M+IW+GAP, R2_LAB-0.03, CW-IW-GAP, 0.20, "&#10022; <u>Proposed Solution</u> (Describe your Idea/Solution/Prototype)")
-b += img("img/f1-sachet.png", M, R2_Y, IW, R2_H)
-b += el("tx", M+IW+GAP, R2_Y, CW-IW-GAP, R2_H, bullets([
-  ("Detailed explanation —",
-   "Scout = <b>Arduino UNO Q</b> (Qualcomm Dragonwing QRB2210 + real-time STM32U585). "
-   "PX4 flies on the MCU at 1 kHz; YOLOv8n INT8, VIO and the decision tree run on Linux. "
-   "RGB + thermal + its own Wi-Fi/BLE radio. The NDRF truck adds fused mapping and a language "
-   "model — an <b>accelerator, never a dependency</b>."),
-  ("How it addresses the problem —",
-   "Wayanad 2024: 1,300 responders, 6 zones, <b>5+ days</b>, 206 never found. Six scouts sweep the "
-   "same 15 km² in <b>5.8 hours</b> — <b>+64 survivors per 100 trapped</b>."),
-  ("Innovation and uniqueness —",
-   "<b>SACHET cell broadcast, inverted.</b> NDMA already reaches 1.43 bn handsets to say <i>evacuate</i>. "
-   "One message saying <i>turn Bluetooth on</i> makes every phone a beacon — and the scout's own "
-   "Qualcomm radio is already the receiver. <b>Zero added hardware, zero marginal cost.</b>"),
+IW2 = IW                                  # two half-width panels on row 2
+b += lab("③ ONE AIRCRAFT, THREE PAYLOADS", M, R2_LAB, IW2)
+b += lab("④ THE IDEA NOBODY HAS USED", M+IW2+GAP, R2_LAB, IW2)
+b += el("shead", M+2*(IW2+GAP), R2_LAB-0.03, CW-2*(IW2+GAP), 0.20,
+        "&#10022; <u>Proposed Solution</u> (Describe your Idea/Solution/Prototype)")
+b += img("img/f3-payload.png", M, R2_Y, IW2, R2_H)
+b += img("img/f1-sachet.png",  M+IW2+GAP, R2_Y, IW2, R2_H)
+b += el("tx", M+2*(IW2+GAP), R2_Y, CW-2*(IW2+GAP), R2_H, bullets([
+  ("Detailed explanation:",
+   "One scout is an <b>Arduino UNO Q</b> (Qualcomm Dragonwing QRB2210 + real-time STM32U585) "
+   "carrying RGB, thermal and its own Wi-Fi/BLE radio. PX4 flies on the MCU at 1 kHz; detection, "
+   "odometry and the decision tree run on Linux. <b>It is not only a swarm.</b> A single aircraft "
+   "also carries swappable payloads: breadcrumb radios, acoustic and CO&#8322; pods, a tethered "
+   "crawler. The truck is an accelerator, never a dependency."),
+  ("How it addresses the problem:",
+   "Wayanad 2024: 1,300 responders, 6 zones, <b>5+ days</b>, 206 never found. One scout sweeps "
+   "0.43 km&sup2;/h alone; six sweep the full 15 km&sup2; in <b>5.8 hours</b>, for "
+   "<b>+64 survivors per 100 trapped</b>."),
+  ("Innovation and uniqueness:",
+   "<b>SACHET cell broadcast, inverted.</b> NDMA already reaches 1.43 bn handsets to say "
+   "<i>evacuate</i>. One message saying <i>turn Bluetooth on</i> makes every phone a beacon, and "
+   "the scout's own Qualcomm radio is already the receiver. <b>Zero added hardware.</b>"),
 ]))
 S.append(slide("PROPOSED SOLUTION", b, 2))
 
 # ---------------------------------------------------------------- 3 TECHNICAL
 SLIDE[0]=3
 b  = el("key", M, KEY_Y, CW, KEY_H,
-        "<b>Detection is off-the-shelf. The decision layer is ours — and it is measured on Qualcomm silicon.</b>")
-b += lab("① HOW ONE AIRCRAFT DECIDES — 1 Hz, DETERMINISTIC", M, R1_LAB, COL)
+        "<b>Detection is off-the-shelf. The decision layer is ours, and it is measured on Qualcomm silicon.</b>")
+b += lab("① HOW ONE AIRCRAFT DECIDES · 1 Hz, DETERMINISTIC", M, R1_LAB, COL)
 b += lab("② WHAT ACTUALLY REACHES A BURIED PERSON", M+COL+GAP, R1_LAB, COL)
 b += img("img/s2-loop.png",   M, R1_Y, COL, R1_H)
 b += img("img/f2-buried.png", M+COL+GAP, R1_Y, COL, R1_H)
@@ -123,16 +129,16 @@ b += el("chipbar", TX, R2_Y, TXW, 0.50, chips([
   ("RADIO",     ["Wi-Fi 5", "BT 5.1", "LoRa SX1262", "breadcrumb relays"]),
 ]))
 b += el("tx", TX, R2_Y+0.56, TXW, R2_H-0.56, bullets([
-  ("Methodology — four algorithms, not a wrapper:",
-   "<b>(1)</b> two-pass descent, SAHI-style, with min-window-cover crop planning, union-find "
+  ("Methodology:",
+   "<b>Four algorithms, not a wrapper.</b> <b>(1)</b> two-pass descent, SAHI-style, with min-window-cover crop planning, union-find "
    "cross-pass merging and weighted box fusion · <b>(2)</b> correlated Bayesian fusion solving "
    "<b>Σw = 1</b>, which discounts sensors that fail together and reduces to Chair-Varshney when "
    "they do not · <b>(3)</b> prize-collecting <b>Held-Karp</b> route DP, exact, battery reserve "
    "inside the DP · <b>(4)</b> 0/1 knapsack for the LoRa frame. <b>9/9 self-tests against brute force.</b>"),
-  ("Measured, not estimated —",
+  ("Measured, not estimated:",
    "YOLOv8n INT8 @640 on <b>Qualcomm AI Hub, real devices</b>: Arduino Ventuno Q (IQ-8275) "
    "<b>1.85 ms / 539 FPS</b>; Dragonwing RB3 Gen 2 (QCS6490) <b>11.21 ms / 89 FPS</b>. "
-   "<b>247 of 247 layers on the Hexagon NPU, zero CPU fallback.</b> The sweep needs 0.22 Hz — "
+   "<b>247 of 247 layers on the Hexagon NPU, zero CPU fallback.</b> The sweep needs 0.22 Hz, so "
    "the headroom runs detection, VIO and the radio scanner at once."),
 ]))
 S.append(slide("TECHNICAL APPROACH", b, 3))
@@ -141,7 +147,7 @@ S.append(slide("TECHNICAL APPROACH", b, 3))
 SLIDE[0]=4
 b  = el("key", M, KEY_Y, CW, KEY_H,
         "<b>We built four architectures, scored them against our own criteria, and shipped the one that survives losing pieces.</b>")
-b += lab("① THE ALTERNATIVES WE TESTED — AND WHY OURS WON", M, R1_LAB, COL)
+b += lab("① THE ALTERNATIVES WE TESTED · AND WHY OURS WON", M, R1_LAB, COL)
 b += lab("② WHAT IT COSTS AGAINST THE ALTERNATIVE", M+COL+GAP, R1_LAB, COL)
 b += img("img/r3-alternatives.png", M, R1_Y, COL, R1_H)
 b += img("img/f4-cost.png",         M+COL+GAP, R1_Y, COL, R1_H)
@@ -149,16 +155,16 @@ b += lab("③ WHEN PIECES FAIL", M, R2_LAB, IW)
 b += el("shead", M+IW+GAP, R2_LAB-0.03, CW-IW-GAP, 0.20, "&#10022; <u>Feasibility and Viability</u>")
 b += img("img/f5-degrade.png", M, R2_Y, IW, R2_H)
 b += el("tx", M+IW+GAP, R2_Y, CW-IW-GAP, R2_H, bullets([
-  ("Feasibility —",
+  ("Feasibility:",
    "<b>₹2.68 lakh</b> total, Indian-vendor sourced (Robu / Robocraze / Thundercomm). That is "
    "<b>86 minutes</b> of charter helicopter. Airframe, flight stack and radios are all commodity; "
    "the detector is already profiled on real Qualcomm hardware."),
-  ("Potential challenges and risks —",
+  ("Potential challenges and risks:",
    "Thermal <b>inverts</b> on sun-heated rubble in daylight · VIO drifts ~0.5% of path, which is "
    "21 m over a full sortie · FINDER-class radar <b>reported three breath signals at Wayanad where "
    "nothing was found</b> · a 500 mm airframe cannot enter a collapsed doorway."),
-  ("Strategies for overcoming them —",
-   "Independence weighting means <b>no single stream ever decides</b> — the radar that lied is one "
+  ("Strategies for overcoming them:",
+   "Independence weighting means <b>no single stream ever decides</b>. The radar that lied is one "
    "weighted vote · GPS-denied excursions are bounded to 1–3 min by breadcrumb anchors and loop "
    "closure at the truck, giving <b>1.2–3.6 m</b>, inside the re-inspect radius · interiors are "
    "reached by <b>dropped breadcrumb pods</b>, not by flying the sweep frame indoors · and the "
@@ -171,25 +177,25 @@ SLIDE[0]=5
 b  = el("key", M, KEY_Y, CW, KEY_H,
         "<b>The 72-hour window is the entire problem. We move first contact from day three to hour six.</b>")
 b += lab("① OUT OF 100 TRAPPED PEOPLE, HOW MANY ARE STILL ALIVE", M, R1_LAB, COL)
-b += lab("② WHAT THE COMMANDER SEES — ON-DEVICE, NO NETWORK", M+COL+GAP, R1_LAB, COL)
+b += lab("② WHAT THE COMMANDER SEES · ON-DEVICE, NO NETWORK", M+COL+GAP, R1_LAB, COL)
 b += img("img/r1-survival.png",  M, R1_Y, COL, R1_H)
 b += img("img/p5-dashboard.jpg", M+COL+GAP, R1_Y, COL, R1_H, "cover")
 b += lab("③ WHAT IT IS ALL FOR", M, R2_LAB, IW)
 b += el("shead", M+IW+GAP, R2_LAB-0.03, CW-IW-GAP, 0.20, "&#10022; <u>Impact and Benefits</u>")
 b += img("img/c6-void.jpg", M, R2_Y, IW, R2_H, "cover")
 b += el("tx", M+IW+GAP, R2_Y, CW-IW-GAP, R2_H, bullets([
-  ("Impact on the target audience —",
+  ("Impact on the target audience:",
    "NDRF, SDRF and the Army search at roughly 0.1 km²/h per team. Kestrel sweeps <b>2.6 km²/h</b>. "
    "On the Wayanad footprint that is <b>5.8 hours instead of five days</b>: <b>99 alive per 100</b> "
    "at six hours against <b>35 at seventy-two</b>."),
-  ("Social —",
+  ("Social:",
    "Responders stop walking unstable debris and live power lines to find out whether anyone is there. "
    "The aircraft takes that risk, and it takes it at night, in monsoon, without fatigue."),
-  ("Economic —",
-   "<b>₹502 per km²</b> against <b>₹13,800</b> by charter helicopter — <b>27×</b>. Equipping all "
+  ("Economic:",
+   "<b>₹502 per km²</b> against <b>₹13,800</b> by charter helicopter, <b>27×</b>. Equipping all "
    "<b>738 districts</b> costs ≈ <b>₹19.86 Cr</b>, which is <b>0.12%</b> of the national disaster "
    "preparedness line. It is already funded; it is a procurement decision, not a budget request."),
-  ("Environmental —",
+  ("Environmental:",
    "Battery-electric, no fuel burn, and the scout's brain is a ₹5,190 board rather than a ₹50,000 one."),
 ]))
 S.append(slide("IMPACT AND BENEFITS", b, 5))
@@ -201,37 +207,37 @@ b  = el("key", M, KEY_Y, CW, KEY_H,
         "<b>Every number in this deck traces to a source. Every claim about our own silicon is a job ID you can open.</b>")
 refs = [
  ("Peer-reviewed &amp; field evidence", [
-  "Team <b>CERBERUS</b>, winner, DARPA Subterranean Challenge 2021 — base-station compute + breadcrumbed radio nodes",
-  "Zhejiang Univ., <i>Swarm of micro flying robots in the wild</i>, <b>Science Robotics 2022</b> — decentralised, no central aircraft",
-  "Akyon et al., <b>SAHI</b>, arXiv <b>2202.06934</b> — slicing raises AP <b>+6.8%</b> on VisDrone with no retraining",
+  "Team <b>CERBERUS</b>, winner, DARPA Subterranean Challenge 2021: base-station compute + breadcrumbed radio nodes",
+  "Zhejiang Univ., <i>Swarm of micro flying robots in the wild</i>, <b>Science Robotics 2022</b>: decentralised, no central aircraft",
+  "Akyon et al., <b>SAHI</b>, arXiv <b>2202.06934</b>: slicing raises AP <b>+6.8%</b> on VisDrone with no retraining",
   "Solovyev et al., <b>Weighted Boxes Fusion</b>, arXiv 1910.13302",
-  "<b>Chair &amp; Varshney</b>, IEEE TAES 1986 — optimal LLR decision fusion; we generalise it to correlated streams",
-  "<i>Sensors</i> <b>18(3) 852</b> — CO₂ + thermal + microphone fusion for trapped-victim detection",
-  "NASA JPL / DHS <b>FINDER</b> — 9 m rubble penetration; four men found alive, Nepal 2015",
-  "<b>ACHORD</b> / CARA (JPL CoSTAR) — communication-aware coordination with droppable radios",
-  "Held &amp; Karp, <i>J. SIAM</i> 1962 — exact DP for the sequencing problem we solve per sortie",
-  "UAV-VLRR arXiv 2503.02465 · <b>AVERY</b> arXiv 2511.18151 — VLM split computing for disaster response",
+  "<b>Chair &amp; Varshney</b>, IEEE TAES 1986: optimal LLR decision fusion; we generalise it to correlated streams",
+  "<i>Sensors</i> <b>18(3) 852</b>: CO₂ + thermal + microphone fusion for trapped-victim detection",
+  "NASA JPL / DHS <b>FINDER</b>: 9 m rubble penetration; four men found alive, Nepal 2015",
+  "<b>ACHORD</b> / CARA (JPL CoSTAR): communication-aware coordination with droppable radios",
+  "Held &amp; Karp, <i>J. SIAM</i> 1962: exact DP for the sequencing problem we solve per sortie",
+  "UAV-VLRR arXiv 2503.02465 · <b>AVERY</b> arXiv 2511.18151: VLM split computing for disaster response",
  ]),
  ("Indian operational &amp; policy record", [
-  "<b>Wayanad landslide</b>, 30 Jul 2024 — 1,300 personnel, 40 teams, 6 zones, 5+ days, 357 dead, <b>206 missing</b>, ~15 km²",
-  "<b>C-DOT SACHET</b> / NDMA cell broadcast — 1.43 bn citizens, 36 states, 14.5 M tower cells",
-  "<b>15th Finance Commission</b> 2021–26 — NDRF/SDRF preparedness allocation",
-  "<b>DGCA</b> UAS Rules 2021 · Drone Rules amendment — micro/small category, RPC training",
-  "<b>keralarescue.in</b>, Kerala 2018 — crowd-sourced rescue requests, IEEE Kerala + Kerala IT Mission",
-  "<b>Nepal–Tibet glacial flood</b>, Aug–Sep 2026 · <b>Assam floods</b>, Jul–Aug 2026 — the live monsoon record",
-  "<b>NDMA</b> / NDRF deployment doctrine — 40 teams across 6 zones is the Wayanad baseline we measure against",
-  "<b>IAMSAR</b> sweep-width methodology — the ground-team rate our 0.1 km²/h figure derives from",
-  "<b>ISRO Bhuvan</b> · Copernicus <b>Sentinel-1 SAR</b> — free pre-flight damage priors",
+  "<b>Wayanad landslide</b>, 30 Jul 2024: 1,300 personnel, 40 teams, 6 zones, 5+ days, 357 dead, <b>206 missing</b>, ~15 km²",
+  "<b>C-DOT SACHET</b> / NDMA cell broadcast: 1.43 bn citizens, 36 states, 14.5 M tower cells",
+  "<b>15th Finance Commission</b> 2021–26: NDRF/SDRF preparedness allocation",
+  "<b>DGCA</b> UAS Rules 2021 · Drone Rules amendment: micro/small category, RPC training",
+  "<b>keralarescue.in</b>, Kerala 2018: crowd-sourced rescue requests, IEEE Kerala + Kerala IT Mission",
+  "<b>Nepal–Tibet glacial flood</b>, Aug–Sep 2026 · <b>Assam floods</b>, Jul–Aug 2026: the live monsoon record",
+  "<b>NDMA</b> / NDRF deployment doctrine: 40 teams across 6 zones is the Wayanad baseline we measure against",
+  "<b>IAMSAR</b> sweep-width methodology: the ground-team rate our 0.1 km²/h figure derives from",
+  "<b>ISRO Bhuvan</b> · Copernicus <b>Sentinel-1 SAR</b>: free pre-flight damage priors",
  ]),
  ("Qualcomm platform &amp; our own measurements", [
-  "<b>Qualcomm AI Hub</b> — YOLOv8n INT8 @640, QNN DLC, <code>--quantize_io</code>, profiled on physical devices",
+  "<b>Qualcomm AI Hub</b>: YOLOv8n INT8 @640, QNN DLC, <code>--quantize_io</code>, profiled on physical devices",
   "Arduino <b>Ventuno Q</b> (Dragonwing IQ-8275, Hexagon v75): <b>1.85 ms · 539 FPS · 247/247 NPU</b>",
   "Dragonwing <b>RB3 Gen 2</b> (QCS6490, Hexagon v68): <b>11.21 ms · 89 FPS · 247/247 NPU</b>",
-  "Arduino <b>UNO Q</b> — QRB2210 + STM32U585, Wi-Fi 5 + BT 5.1, ₹5,190 (4 GB / 32 GB)",
-  "<b>PX4 / ROS 2 / VINS-Fusion</b> — open flight and odometry stack",
+  "Arduino <b>UNO Q</b>: QRB2210 + STM32U585, Wi-Fi 5 + BT 5.1, ₹5,190 (4 GB / 32 GB)",
+  "<b>PX4 / ROS 2 / VINS-Fusion</b>: open flight and odometry stack",
   "<i>Third-party</i>: Foundries.io measured YOLOv5 Pico at <b>~17 FPS</b> on a physical UNO Q",
-  "<b>SARD</b> search-and-rescue aerial dataset — 1,980 images, 6,525 person instances, fine-tune in progress",
-  "<b>ONNX Runtime Web</b> — the demo executes in the judge's browser, no server and no upload",
+  "<b>SARD</b> search-and-rescue aerial dataset: 1,980 images, 6,525 person instances, fine-tune in progress",
+  "<b>ONNX Runtime Web</b>: the demo executes in the judge's browser, no server and no upload",
   "<i>Honest limit</i>: <b>QRB2210 is not offered on AI Hub</b>, so the scout figure stays third-party",
  ]),
 ]
@@ -243,7 +249,7 @@ for i, (h_, items) in enumerate(refs):
 QY = 4.09
 b += el("tx qrrow", M, QY, CW, 0.98, f'''
   <div class="qrs">
-    <div><img src="img/qr-demo.png"><div><b>Live demo — runs in your browser</b><br>
+    <div><img src="img/qr-demo.png"><div><b>Live demo · runs in your browser</b><br>
       Two-pass descent, correlated fusion, Held-Karp routing and the knapsack link budget,
       executing on <i>your</i> device. No server, no login.<br>
       <code>huggingface.co/spaces/anshumanatrey/kestrel-survivor-detection</code></div></div>
@@ -252,7 +258,7 @@ b += el("tx qrrow", M, QY, CW, 0.98, f'''
       brute-force self-tests.<br>
       <code>github.com/AnshumanAtrey/sih2k26-the-drone-syndicate</code></div></div>
   </div>''')
-b += lab("OUR OWN MEASUREMENTS — QUALCOMM AI HUB, PHYSICAL DEVICES, JOB IDS ON REQUEST", M, 5.12, CW)
+b += lab("OUR OWN MEASUREMENTS · QUALCOMM AI HUB, PHYSICAL DEVICES, JOB IDS ON REQUEST", M, 5.12, CW)
 b += el("tbl", M, 5.32, CW, 1.54, """
  <table>
   <tr><th>Device</th><th>Silicon</th><th>Precision</th><th>Latency</th><th>Throughput</th><th>Compute units</th><th>Peak memory</th></tr>
@@ -263,7 +269,7 @@ b += el("tbl", M, 5.32, CW, 1.54, """
   <tr><td>Arduino Ventuno Q</td><td>Dragonwing IQ-8275 · Hexagon v75</td><td>fp16</td>
       <td>6.77 ms</td><td>147.8 FPS</td><td>247 / 247 NPU</td><td>16.5 MB</td></tr>
   <tr class="mu"><td>Dragonwing RB3 Gen 2</td><td>QCS6490 · Hexagon v68</td><td>fp16</td>
-      <td colspan="4">graph will not compose on Hexagon v68 — reported as a negative result, not omitted</td></tr>
+      <td colspan="4">graph will not compose on Hexagon v68: reported as a negative result, not omitted</td></tr>
  </table>""")
 S.append(slide("RESEARCH AND REFERENCES", b, 6))
 
@@ -337,7 +343,7 @@ html,body{margin:0;padding:0;background:#fff;
 .tlist li::before{content:"•  ";font-weight:700}
 .tlist b{font-weight:700}
 """
-out = ("<!doctype html><html><head><meta charset='utf-8'><title>Kestrel — SIH 2026</title>"
+out = ("<!doctype html><html><head><meta charset='utf-8'><title>Kestrel · SIH 2026</title>"
        f"<style>{CSS}</style></head><body>" + "".join(S) + "</body></html>")
 pathlib.Path("deck.html").write_text(out)
 json.dump(boxes, open("boxes.json","w"), indent=1)
