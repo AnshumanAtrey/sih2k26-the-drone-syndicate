@@ -31,7 +31,7 @@ def lab(t, x, y, w):
     return el("lab", x, y, w, 0.16, html.escape(t))
 
 def slide(title, body, n):
-    return f'''<section class="s">
+    return f'''<section class="s sl{n}">
   <div class="oval">Drone<br>Syndicate</div>
   <img class="slogo" src="img/sih-logo.png">
   <div class="tb"><h1>{html.escape(title)}</h1></div>
@@ -302,7 +302,7 @@ html,body{margin:0;padding:0;background:#fff;
 .im{overflow:hidden;border:.008in solid #d6dde8;border-radius:.035in;background:#fff}
 .im img{display:block}
 .tx{overflow:hidden}
-.tx p{margin:0 0 .058in;font-size:8.1pt;line-height:1.31;color:#25344d;
+.tx p{margin:0 0 .058in;font-size:var(--txs,8.1pt);line-height:1.33;color:#25344d;
  padding-left:.125in;text-indent:-.125in}
 .tx p::before{content:"▪  ";color:#0070C0;font-weight:700}
 .tx p b{color:#0f2038}
@@ -331,6 +331,7 @@ a{color:#0070C0;text-decoration:underline}
 .tbl td{font-size:7.4pt;padding:.036in .07in;border-bottom:.006in solid #e3e8ef;color:#25344d}
 .tbl tr.hi td{background:#eef6fc}
 .tbl tr.mu td{color:#7c8aa0;font-style:italic}
+.sl2{--txs:8.40pt}.sl3{--txs:10.80pt}.sl4{--txs:10.29pt}.sl5{--txs:11.50pt}
 /* ---- title slide: matched to the template's own layout ---- */
 .title{display:block}
 .tlogo{position:absolute;right:.42in;top:.30in;width:2.05in}
