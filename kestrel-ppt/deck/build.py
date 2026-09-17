@@ -5,11 +5,11 @@ import html, json, pathlib
 W, H = 13.333, 7.5
 M      = 0.28           # side margin
 TITLE_H= 0.84           # official template title band
-BAR_Y, BAR_H = 6.95, 0.55
+BAR_Y, BAR_H = 7.10, 0.40
 KEY_Y, KEY_H = 0.88, 0.26
 R1_LAB, R1_Y, R1_H = 1.16, 1.34, 3.38
-R2_LAB, R2_Y = 4.78, 4.96
-R2_H   = 6.86 - R2_Y
+R2_LAB, R2_Y = 4.86, 5.04
+R2_H   = 7.00 - R2_Y
 CW     = W - 2*M
 GAP    = 0.16
 COL    = (CW - GAP) / 2                       # 6.2865 in
@@ -209,32 +209,32 @@ refs = [
  ("Peer-reviewed &amp; field evidence", [
   "Team <b>CERBERUS</b>, winner, DARPA Subterranean Challenge 2021: base-station compute + breadcrumbed radio nodes",
   "Zhejiang Univ., <i>Swarm of micro flying robots in the wild</i>, <b>Science Robotics 2022</b>: decentralised, no central aircraft",
-  "Akyon et al., <b>SAHI</b>, arXiv <b>2202.06934</b>: slicing raises AP <b>+6.8%</b> on VisDrone with no retraining",
-  "Solovyev et al., <b>Weighted Boxes Fusion</b>, arXiv 1910.13302",
+  "Akyon et al., <b>SAHI</b>, <a href='https://arxiv.org/abs/2202.06934'>arXiv <b>2202.06934</b></a>: slicing raises AP <b>+6.8%</b> on VisDrone with no retraining",
+  "Solovyev et al., <b>Weighted Boxes Fusion</b>, <a href='https://arxiv.org/abs/1910.13302'>arXiv 1910.13302</a>",
   "<b>Chair &amp; Varshney</b>, IEEE TAES 1986: optimal LLR decision fusion; we generalise it to correlated streams",
   "<i>Sensors</i> <b>18(3) 852</b>: CO₂ + thermal + microphone fusion for trapped-victim detection",
   "NASA JPL / DHS <b>FINDER</b>: 9 m rubble penetration; four men found alive, Nepal 2015",
   "<b>ACHORD</b> / CARA (JPL CoSTAR): communication-aware coordination with droppable radios",
   "Held &amp; Karp, <i>J. SIAM</i> 1962: exact DP for the sequencing problem we solve per sortie",
-  "UAV-VLRR arXiv 2503.02465 · <b>AVERY</b> arXiv 2511.18151: VLM split computing for disaster response",
+  "UAV-VLRR <a href='https://arxiv.org/abs/2503.02465'>arXiv 2503.02465</a> · <b>AVERY</b> <a href='https://arxiv.org/abs/2511.18151'>arXiv 2511.18151</a>: VLM split computing for disaster response",
  ]),
  ("Indian operational &amp; policy record", [
   "<b>Wayanad landslide</b>, 30 Jul 2024: 1,300 personnel, 40 teams, 6 zones, 5+ days, 357 dead, <b>206 missing</b>, ~15 km²",
-  "<b>C-DOT SACHET</b> / NDMA cell broadcast: 1.43 bn citizens, 36 states, 14.5 M tower cells",
+  "<a href='https://sachet.ndma.gov.in/'><b>C-DOT SACHET</b></a> / NDMA cell broadcast: 1.43 bn citizens, 36 states, 14.5 M tower cells",
   "<b>15th Finance Commission</b> 2021–26: NDRF/SDRF preparedness allocation",
   "<b>DGCA</b> UAS Rules 2021 · Drone Rules amendment: micro/small category, RPC training",
-  "<b>keralarescue.in</b>, Kerala 2018: crowd-sourced rescue requests, IEEE Kerala + Kerala IT Mission",
+  "<a href='https://keralarescue.in/'><b>keralarescue.in</b></a>, Kerala 2018: crowd-sourced rescue requests, IEEE Kerala + Kerala IT Mission",
   "<b>Nepal–Tibet glacial flood</b>, Aug–Sep 2026 · <b>Assam floods</b>, Jul–Aug 2026: the live monsoon record",
   "<b>NDMA</b> / NDRF deployment doctrine: 40 teams across 6 zones is the Wayanad baseline we measure against",
   "<b>IAMSAR</b> sweep-width methodology: the ground-team rate our 0.1 km²/h figure derives from",
   "<b>ISRO Bhuvan</b> · Copernicus <b>Sentinel-1 SAR</b>: free pre-flight damage priors",
  ]),
  ("Qualcomm platform &amp; our own measurements", [
-  "<b>Qualcomm AI Hub</b>: YOLOv8n INT8 @640, QNN DLC, <code>--quantize_io</code>, profiled on physical devices",
+  "<a href='https://aihub.qualcomm.com/'><b>Qualcomm AI Hub</b></a>: YOLOv8n INT8 @640, QNN DLC, <code>--quantize_io</code>, profiled on physical devices",
   "Arduino <b>Ventuno Q</b> (Dragonwing IQ-8275, Hexagon v75): <b>1.85 ms · 539 FPS · 247/247 NPU</b>",
   "Dragonwing <b>RB3 Gen 2</b> (QCS6490, Hexagon v68): <b>11.21 ms · 89 FPS · 247/247 NPU</b>",
   "Arduino <b>UNO Q</b>: QRB2210 + STM32U585, Wi-Fi 5 + BT 5.1, ₹5,190 (4 GB / 32 GB)",
-  "<b>PX4 / ROS 2 / VINS-Fusion</b>: open flight and odometry stack",
+  "<a href='https://px4.io/'><b>PX4 / ROS 2 / VINS-Fusion</b></a>: open flight and odometry stack",
   "<i>Third-party</i>: Foundries.io measured YOLOv5 Pico at <b>~17 FPS</b> on a physical UNO Q",
   "<b>SARD</b> search-and-rescue aerial dataset: 1,980 images, 6,525 person instances, fine-tune in progress",
   "<b>ONNX Runtime Web</b>: the demo executes in the judge's browser, no server and no upload",
@@ -252,11 +252,11 @@ b += el("tx qrrow", M, QY, CW, 0.98, f'''
     <div><img src="img/qr-demo.png"><div><b>Live demo · runs in your browser</b><br>
       Two-pass descent, correlated fusion, Held-Karp routing and the knapsack link budget,
       executing on <i>your</i> device. No server, no login.<br>
-      <code>huggingface.co/spaces/anshumanatrey/kestrel-survivor-detection</code></div></div>
+      <a href='https://huggingface.co/spaces/anshumanatrey/kestrel-survivor-detection'>huggingface.co/spaces/anshumanatrey/kestrel-survivor-detection</a></div></div>
     <div><img src="img/qr-repo.png"><div><b>Engineering record</b><br>
       Sourced data registry, BOM, every prompt, and the algorithm module with its
       brute-force self-tests.<br>
-      <code>github.com/AnshumanAtrey/sih2k26-the-drone-syndicate</code></div></div>
+      <a href='https://github.com/AnshumanAtrey/sih2k26-the-drone-syndicate'>github.com/AnshumanAtrey/sih2k26-the-drone-syndicate</a></div></div>
   </div>''')
 b += lab("OUR OWN MEASUREMENTS · QUALCOMM AI HUB, PHYSICAL DEVICES, JOB IDS ON REQUEST", M, 5.12, CW)
 b += el("tbl", M, 5.32, CW, 1.54, """
@@ -283,15 +283,15 @@ html,body{margin:0;padding:0;background:#fff;
 .s:last-child{page-break-after:auto}
 .tb{left:1.72in;top:0;width:9.9in;height:.84in;display:flex;align-items:center;
  justify-content:center}
-.tb h1{font-family:"Times New Roman",Times,serif;font-weight:700;font-size:24pt;margin:0;
+.tb h1{font-family:"Times New Roman",Times,serif;font-weight:700;font-size:30pt;margin:0;
  letter-spacing:.005em;color:#0f2038;text-align:center}
 .oval{left:.26in;top:.09in;width:1.3in;height:.66in;border:.014in solid #8A87C4;
  border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;
  font-size:8.4pt;font-weight:700;line-height:1.14;color:#0f2038}
 .slogo{left:11.72in;top:.1in;width:1.34in}
-.bar{left:0;top:6.95in;width:13.333in;height:.55in;background:#0070C0}
-.ft{position:absolute;left:.3in;top:7.06in;font-size:8pt;color:#fff;letter-spacing:.02em}
-.pg{position:absolute;right:.32in;top:7.05in;font-size:11pt;color:#fff;font-weight:700}
+.bar{left:0;top:7.10in;width:13.333in;height:.40in;background:#0070C0}
+.ft{left:.3in;top:7.185in;font-size:8pt;color:#fff;letter-spacing:.02em}
+.pg{right:.32in;top:7.17in;font-size:11pt;color:#fff;font-weight:700}
 .ab,.tb,.bar,.ft,.pg,.oval,.slogo{position:absolute}
 .key{font-size:11.2pt;line-height:1.2;color:#0070C0;display:flex;align-items:center;
  border-left:.035in solid #0070C0;padding-left:.11in}
@@ -322,7 +322,9 @@ html,body{margin:0;padding:0;background:#fff;
 .qrs>div{display:flex;gap:.13in;flex:1;align-items:flex-start}
 .qrs img{width:.95in;height:.95in;flex:none}
 .qrs>div>div{font-size:7.6pt;line-height:1.3;color:#25344d}
-.qrs code{font-size:6.8pt;color:#0070C0;word-break:break-all}
+.qrs a{font-size:6.8pt;color:#0070C0;word-break:break-all;text-decoration:underline;
+ font-family:ui-monospace,Menlo,monospace}
+a{color:#0070C0;text-decoration:underline}
 .tbl table{border-collapse:collapse;width:100%}
 .tbl th{font-size:6.6pt;text-transform:uppercase;letter-spacing:.05em;color:#7c8aa0;
  text-align:left;padding:.028in .07in;border-bottom:.012in solid #0070C0;font-weight:700}
@@ -331,15 +333,15 @@ html,body{margin:0;padding:0;background:#fff;
 .tbl tr.mu td{color:#7c8aa0;font-style:italic}
 /* ---- title slide: matched to the template's own layout ---- */
 .title{display:block}
-.tlogo{position:absolute;right:.42in;top:.24in;width:2.15in}
-.tmark{position:absolute;right:1.62in;top:1.62in;width:3.45in;opacity:.95}
-.tev{position:absolute;left:0;top:.30in;width:13.333in;text-align:center;margin:0;
- font-family:"Times New Roman",Times,serif;font-size:31pt;font-weight:700;color:#1F497D}
-.tsub{position:absolute;left:0;top:1.28in;width:13.333in;text-align:center;
- font-family:"Times New Roman",Times,serif;font-size:23pt;font-weight:700;color:#0f2038}
-.tlist{position:absolute;left:.78in;top:2.42in;width:7.05in;margin:0;padding:0;list-style:none}
-.tlist li{font-size:12.4pt;line-height:1.34;color:#111;margin-bottom:.20in;
- padding-left:.26in;text-indent:-.26in}
+.tlogo{position:absolute;right:.42in;top:.30in;width:2.05in}
+.tmark{position:absolute;right:1.15in;top:2.05in;width:3.55in;opacity:.95}
+.tev{position:absolute;left:0;top:.34in;width:10.72in;text-align:center;margin:0;
+ font-family:Garamond,"Times New Roman",Times,serif;font-size:40pt;font-weight:700;color:#1F497D}
+.tsub{position:absolute;left:0;top:1.30in;width:10.72in;text-align:center;
+ font-family:"Times New Roman",Times,serif;font-size:32pt;font-weight:700;color:#0f2038}
+.tlist{position:absolute;left:.72in;top:2.30in;width:7.25in;margin:0;padding:0;list-style:none}
+.tlist li{font-size:19pt;line-height:1.26;color:#111;margin-bottom:.155in;
+ padding-left:.32in;text-indent:-.32in}
 .tlist li::before{content:"•  ";font-weight:700}
 .tlist b{font-weight:700}
 """
