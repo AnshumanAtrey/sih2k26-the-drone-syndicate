@@ -1,11 +1,12 @@
 name: PX4 SITL survey flight
 
-# Produces a real ULog from a real PX4 instance flying the Kestrel survey profile.
-# Runs in CI because the local machine has ~7 GB free and PX4 + toolchain needs 3-5.
 on:
   workflow_dispatch:
   push:
-    paths: ['tools/fly_survey.py', '.github/workflows/px4-survey.yml']
+    paths:
+      - 'tools/fly_survey.py'
+      - 'tools/inspect_ulog.py'
+      - '.github/workflows/px4-survey.yml'
 
 jobs:
   fly:
@@ -16,62 +17,48 @@ jobs:
 
       - name: Checkout PX4
         run: |
-          git clone --recursive --depth 1 -b v1.15.4 \
-            https://github.com/PX4/PX4-Autopilot.git px4
-          echo "PX4 at $(cd px4 && git describe --tags)"
+          git clone --recursive --depth 1 -b v1.15.4 https://github.com/PX4/PX4-Autopilot.git px4
+          cd px4 && git describe --tags
 
       - name: Install toolchain
         run: |
-          bash px4/Tools/setup/ubuntu.sh --no-nuttx --no-sim-tools
+          bash px4/Tools/setup/ubuntu.sh --no-nuttx
           python3 -m pip install --quiet pymavlink pyulog
 
       - name: Build SITL
         run: |
           cd px4
-          make px4_sitl_default -j$(nproc) 2>&1 | tail -20
+          make px4_sitl_default -j$(nproc) 2>&1 | tail -15
           ls -la build/px4_sitl_default/bin/px4
 
       - name: Fly the survey
         run: |
           cd px4
-          # jMAVSim headless: no GPU, no display, and light enough for a CI runner
           export HEADLESS=1 PX4_SIM_SPEED_FACTOR=4
           nohup make px4_sitl jmavsim > /tmp/sitl.log 2>&1 &
-          echo "waiting for MAVLink on 14540..."
-          for i in $(seq 1 90); do
+          for i in $(seq 1 120); do
             grep -q "Ready for takeoff" /tmp/sitl.log && break
             sleep 2
           done
           tail -25 /tmp/sitl.log
-          python3 ../tools/fly_survey.py || echo "mission script exited $?"
+          python3 ../tools/fly_survey.py || echo "mission script exited non-zero"
           sleep 8
-          pkill -f px4 || true; sleep 3
+          pkill -f px4 || true
+          sleep 3
 
-      - name: Collect ULog
+      - name: Collect and inspect ULog
         run: |
           mkdir -p out
-          find px4/build/px4_sitl_default/rootfs/log -name '*.ulg' -print0 \
-            | xargs -0 -I{} cp {} out/ 2>/dev/null || true
-          ls -la out/ || echo "NO LOGS"
-          for f in out/*.ulg; do
-            echo "=== $f ==="
-            python3 -c "
-from pyulog import ULog
-u=ULog('$f')
-print('duration %.1f s' % ((u.last_timestamp-u.start_timestamp)/1e6))
-print('messages:', len(u.data_list))
-names=[d.name for d in u.data_list]
-for k in ['vehicle_gps_position','vehicle_local_position','vehicle_air_data','vehicle_status']:
-    print(' ', k, 'present' if k in names else 'MISSING')
-" || true
-          done
+          find px4/build/px4_sitl_default/rootfs/log -name '*.ulg' -exec cp {} out/ \; || true
+          ls -la out/ || echo "NO LOGS FOUND"
+          python3 tools/inspect_ulog.py 'out/*.ulg' || true
+          echo "--- sitl tail ---"
           tail -40 /tmp/sitl.log
 
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: px4-survey-ulog
-          path: |
-            out/*.ulg
-            /tmp/sitl.log
+          path: out/*.ulg
           if-no-files-found: warn
           retention-days: 30
