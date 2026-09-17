@@ -54,4 +54,4 @@ their text stays crisp. That took the PDF from **20.5 MB to 8.6 MB** with no vis
 
 ## Still open
 
-- Team Name and Team ID on slide 1 are **deliberately blank** — fill from the SIH portal registration.
+- Team Name is **Drone Syndicate**. **Team ID is still blank** — fill from the SIH portal registration.

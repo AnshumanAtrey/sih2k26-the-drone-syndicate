@@ -35,7 +35,7 @@ def slide(title, body, n):
   <div class="tb"><h1>{html.escape(title)}</h1></div>
   {body}
   <div class="bar"></div>
-  <div class="ft">SIH 2026 · PS 26177 · Qualcomm Inc · Hardware · Robotics &amp; Drones</div>
+  <div class="ft">SIH 2026 · PS 26177 · Qualcomm Inc · Hardware · Robotics &amp; Drones · <b>Drone Syndicate</b></div>
   <div class="pg">{n}</div>
 </section>'''
 
@@ -62,7 +62,7 @@ S.append(f'''<section class="s title">
       <span><em>Organisation</em>Qualcomm Inc</span>
     </div>
     <div class="meta">
-      <span><em>Team Name</em>&nbsp;</span>
+      <span><em>Team Name</em>Drone Syndicate</span>
       <span><em>Team ID</em>&nbsp;</span>
     </div>
   </div>
