@@ -55,3 +55,41 @@ their text stays crisp. That took the PDF from **20.5 MB to 8.6 MB** with no vis
 ## Still open
 
 - Team Name is **Drone Syndicate**. **Team ID is still blank** — fill from the SIH portal registration.
+
+## Format compliance — checked against six actual winning decks
+
+Not asserted from memory. Two sources.
+
+**The verbatim rule**, from slide 7 of the template's own XML:
+> "You can only use provided template for making the PPT **without changing the idea details
+> pointers** (mentioned in previous slides)."
+
+The restrictive clause is scoped: what you may not change is the *idea details pointers*. We keep
+them as the literal structure of every content block. The 26-page official guidelines say nothing
+about the template — only "Idea presentation (PDF)" and, among nine judging criteria, "clarity and
+details in the prescribed format."
+
+**The empirical check** — six winning decks (GeoGuards '25, Tech Pioneers '25, Techbyte '24,
+AKY GreenSort '24, Cannon Crew '24, Innovators '24):
+
+| Element | Kept by |
+|---|---|
+| Team-name oval, top-left | **6 / 6** |
+| Centred serif title | **6 / 6** |
+| SIH logo, top-right | 5 / 6 |
+| Blue bottom bar + page number | 5 / 6 |
+| Template page size 13.333 × 7.5 in | **0 / 6** |
+
+Sizes ranged 13.76 × 7.82 to 26.67 × 15 in. Techbyte recoloured the background pink and replaced the
+SIH logo; Tech Pioneers dropped the bottom bar and renamed the title to their product. **Nobody
+ships a faithful clone.** The pattern is: keep the recognisable skeleton, rebuild the inside.
+
+Worth noting: several of those decks have visible defects — Innovators ships clipped, overlapping
+text on its Technical Approach slide. The bar is structure and clarity, not polish.
+
+**What we adopted from them:**
+- Team-name oval top-left, SIH logo top-right, centred Times New Roman title, blue bar + page number
+- **Visible tech-stack chips** — every hardware winner shows the stack as blocks, never buried in prose
+- Real bullet markers, per the template's "post your idea in points, not paragraphs"
+- Slide 2 opens on a **named beneficiary** (Wayanad's 206 missing) before any technology, per the
+  SIH 2026 playbook's storytelling note that judges retain narratives over feature lists

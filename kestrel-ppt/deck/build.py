@@ -44,6 +44,15 @@ def slide(title, body, n):
 def bullets(items):
     return "".join(f'<p><b>{html.escape(h)}</b> {b}</p>' for h, b in items)
 
+def chips(groups):
+    """Visible tech-stack strip. Every winning hardware deck shows the stack as
+    blocks, never buried in prose."""
+    out = []
+    for head, items in groups:
+        out.append(f'<div class="cg"><em>{html.escape(head)}</em>'
+                   + "".join(f'<span>{i}</span>' for i in items) + '</div>')
+    return '<div class="chips">' + "".join(out) + '</div>'
+
 S = []
 
 # ---------------------------------------------------------------- 1 TITLE
@@ -83,7 +92,7 @@ S.append(f'''<section class="s title">
 # ---------------------------------------------------------------- 2 SOLUTION
 SLIDE[0]=2
 b  = el("key", M, KEY_Y, CW, KEY_H,
-        "<b>One scout is a complete answer to the problem statement. Six is the answer to Wayanad.</b>")
+        "<b>At Wayanad, 206 people were never found. Not because nobody looked &mdash; because 1,300 responders could not cover 15 km&sup2; before the window closed.</b>")
 b += lab("① ONE AIRCRAFT — COMPLETE WITH THE TRUCK SWITCHED OFF", M, R1_LAB, COL)
 b += lab("② SIX OF THEM — 15 km² SWEPT IN 5.8 HOURS", M+COL+GAP, R1_LAB, COL)
 b += img("img/s1-one-drone.png", M, R1_Y, COL, R1_H)
@@ -122,11 +131,14 @@ b += lab("TECHNICAL APPROACH — REQUIRED POINTERS", M+QW*2+GAP, R2_LAB, CW-QW*2
 b += img("img/qr-demo.png", M, R2_Y, QW, QW)
 b += el("qc", M, R2_Y+QW+0.03, QW*2, 0.30,
         "<b>Live demo</b><br>hf.co/spaces/anshumanatrey/<br>kestrel-survivor-detection")
-b += el("tx", M+QW*2+GAP, R2_Y, CW-QW*2-GAP, R2_H, bullets([
-  ("Technologies —",
-   "PX4 + ROS 2 · <b>Qualcomm Dragonwing</b> QRB2210 (scout) and QCS6490 / IQ-8275 (base) · "
-   "YOLOv8n INT8 compiled through <b>Qualcomm AI Hub → QNN</b> · VINS-Fusion VIO for GPS-denied "
-   "flight · Wi-Fi 5 + BT 5.1 mesh, LoRa backhaul, dropped breadcrumb relays."),
+TX = M+QW*2+GAP; TXW = CW-QW*2-GAP
+b += el("chipbar", TX, R2_Y, TXW, 0.50, chips([
+  ("SILICON",   ["Dragonwing QRB2210", "QCS6490", "IQ-8275", "STM32U585"]),
+  ("AI",        ["YOLOv8n INT8", "Qualcomm AI Hub", "QNN", "MobileCLIP"]),
+  ("FLIGHT",    ["PX4", "ROS 2", "VINS-Fusion VIO"]),
+  ("RADIO",     ["Wi-Fi 5", "BT 5.1", "LoRa SX1262", "breadcrumb relays"]),
+]))
+b += el("tx", TX, R2_Y+0.56, TXW, R2_H-0.56, bullets([
   ("Methodology — four algorithms, not a wrapper:",
    "<b>(1)</b> two-pass descent, SAHI-style, with min-window-cover crop planning, union-find "
    "cross-pass merging and weighted box fusion · <b>(2)</b> correlated Bayesian fusion solving "
@@ -299,13 +311,22 @@ html,body{margin:0;padding:0;background:#fff;
 .im{overflow:hidden;border:.008in solid #d6dde8;border-radius:.035in;background:#fff}
 .im img{display:block}
 .tx{overflow:hidden}
-.tx p{margin:0 0 .055in;font-size:8.1pt;line-height:1.31;color:#25344d;text-align:justify}
+.tx p{margin:0 0 .058in;font-size:8.1pt;line-height:1.31;color:#25344d;
+ padding-left:.125in;text-indent:-.125in}
+.tx p::before{content:"▪  ";color:#0070C0;font-weight:700}
 .tx p b{color:#0f2038}
 .rf{overflow:hidden}
 .rf p{margin:0 0 .052in;font-size:7.2pt;line-height:1.29;color:#25344d;
  padding-left:.1in;text-indent:-.1in}
 .rf p::before{content:"▸ ";color:#0070C0;font-weight:700}
 .qc{font-size:6.6pt;line-height:1.24;color:#5b6b83;text-align:center}
+.chipbar{overflow:hidden}
+.chips{display:flex;gap:.17in;flex-wrap:wrap}
+.cg{display:flex;align-items:center;gap:.05in}
+.cg em{font-style:normal;font-size:6.3pt;font-weight:700;letter-spacing:.07em;color:#7c8aa0;
+ margin-right:.02in}
+.cg span{font-size:7pt;font-weight:600;color:#0f2038;background:#eef4fa;
+ border:.006in solid #cfe0ef;border-radius:.03in;padding:.026in .06in;white-space:nowrap}
 .qrs{display:flex;gap:.34in;height:100%}
 .qrs>div{display:flex;gap:.13in;flex:1;align-items:flex-start}
 .qrs img{width:.95in;height:.95in;flex:none}
