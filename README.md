@@ -1,12 +1,24 @@
-# Kestrel — SIH 2026
+# SIH 2026 — Drone Syndicate
+
+Two problem statements this year. One team can submit up to two, so we did.
+
+| # | Idea | Problem statement | The deck |
+|---|---|---|---|
+| 1 | **Kestrel** — a drone that finds people after a landslide or flood | [SIH26177](given/problem-statements/SIH26177.md) · Qualcomm · Hardware · Robotics & Drones | [KESTREL-SIH26177-idea-submission.pdf](kestrel-ppt/deck/KESTREL-SIH26177-idea-submission.pdf) |
+| 2 | **Walrus Securitas** — a tool that checks any network device is set up safely | [SIH26155](given/problem-statements/SIH26155.md) · NTRO · Software · Blockchain & Cybersecurity | [WALRUS-SIH26155-idea-submission.pdf](sih26155-ppt/deck/WALRUS-SIH26155-idea-submission.pdf) |
+
+**Team:** Drone Syndicate · **Team ID:** 133478 · **Deadline:** 20 September 2026
+
+Both decks are 6 pages, PDF, and built the same way: a Python script writes an HTML page, a headless
+browser prints it to a PDF, and the script checks that nothing overlaps and nothing runs off the page.
+
+---
+
+# Submission 1 — Kestrel (the drone)
 
 A drone that finds people after a landslide or flood.
 
-**Team:** Drone Syndicate · **Team ID:** 133478
 **Problem Statement:** [SIH26177](given/problem-statements/SIH26177.md) — Qualcomm Inc · Hardware · Robotics & Drones
-**Deadline:** 20 September 2026
-
----
 
 ## The final PPT
 
@@ -17,8 +29,6 @@ A drone that finds people after a landslide or flood.
 Built by [`kestrel-ppt/deck/build.py`](kestrel-ppt/deck/build.py). If anything changes, re-run that
 and the layout is re-checked automatically — no overlapping text, nothing running off the page.
 
----
-
 ## The two live links on the PDF
 
 | | Link |
@@ -27,8 +37,6 @@ and the layout is re-checked automatically — no overlapping text, nothing runn
 | **Watch the drone fly** (link on slide 6) | https://review.px4.io/plot_app?log=fe88f4b8-f677-4e81-8b96-e6512ebe8af2 |
 
 Both are public. No login.
-
----
 
 ## Where every number on the PDF came from
 
@@ -104,19 +112,6 @@ software. This is the only thing that shows the aircraft actually flying.
 
 Files: [`tools/fly_survey.py`](tools/fly_survey.py) · [`.github/workflows/px4-survey.yml`](.github/workflows/px4-survey.yml)
 
----
-
-## The two QR codes
-
-| QR | Goes to | Made by |
-|---|---|---|
-| Slide 3, and left QR on slide 6 | the live demo | **Hugging Face** |
-| Right QR on slide 6 | our code and notes | **GitHub** |
-
-The flight link on slide 6 is a text link, not a QR — from **Flight Review**.
-
----
-
 ## One line each
 
 - **Kaggle** → trained the AI → gave us the **95% score**
@@ -128,15 +123,59 @@ All four free. Nothing estimated. Every number on the slides came from one of th
 
 ---
 
+# Submission 2 — Walrus Securitas (the network auditor)
+
+A tool that reads any network device's settings file and checks it is set up safely.
+
+**Problem Statement:** [SIH26155](given/problem-statements/SIH26155.md) — NTRO · Software · Blockchain & Cybersecurity
+
+## The final PPT
+
+**[sih26155-ppt/deck/WALRUS-SIH26155-idea-submission.pdf](sih26155-ppt/deck/WALRUS-SIH26155-idea-submission.pdf)**
+
+6 pages. Built by [`sih26155-ppt/deck/build.py`](sih26155-ppt/deck/build.py) — the same script style as
+the drone deck, with the same automatic layout check.
+
+## The live link on the PDF
+
+| | Link |
+|---|---|
+| **Try the auditor** (QR + link on slide 6) | https://walrussecuritas.com/product/network-compliance-auditor |
+
+The page goes live shortly; the QR code on the reference slide already points to it.
+
+## What it does, in plain words
+
+Every router, switch and firewall has one big settings file, and every vendor writes it differently.
+There are official "safe-setup" rulebooks (CIS, NIST, DISA STIG, ISO 27001). The tool reads a device's
+settings, checks **every** rule, and hands back one report: what passed, what failed, how risky each
+failure is, and the exact commands to fix it. It works for any vendor, without anyone writing a new
+parser for each one, and it runs on your own machine so nothing leaves the building.
+
+## Where the deck came from
+
+- **The idea** reuses our own security engine (the Walrus Harness) pointed at device settings instead
+  of at live targets. The core trick — never skip a single check — is already how that engine works.
+- **The 12 diagrams** were generated from written prompts ([`sih26155-ppt/PROMPTS.md`](sih26155-ppt/PROMPTS.md)),
+  in the Walrus brand (one orange, everything else ink on white), then trimmed by
+  [`crop.py`](sih26155-ppt/deck/crop.py) so the pictures fill the page.
+- **The deck** is assembled and layout-checked by [`build.py`](sih26155-ppt/deck/build.py), same as the
+  drone. The QR code is generated straight from the URL.
+
+Files: [`sih26155-ppt/`](sih26155-ppt/) — the README there explains the deck page by page.
+
+---
+
 ## Folders
 
 | Folder | What's in it |
 |---|---|
-| [`kestrel-ppt/deck/`](kestrel-ppt/deck/) | **the final PDF** and the script that builds it |
-| [`kestrel-ppt/DATA.md`](kestrel-ppt/DATA.md) | every number with its source. The long version |
-| [`kestrel-ppt/demo/`](kestrel-ppt/demo/) | the live demo's code |
-| [`model/`](model/) | the trained AI, its score, its training graphs |
-| [`tools/`](tools/) | the flight script |
+| [`kestrel-ppt/deck/`](kestrel-ppt/deck/) | **Kestrel's final PDF** and the script that builds it |
+| [`kestrel-ppt/DATA.md`](kestrel-ppt/DATA.md) | every Kestrel number with its source. The long version |
+| [`kestrel-ppt/demo/`](kestrel-ppt/demo/) | the live drone demo's code |
+| [`sih26155-ppt/`](sih26155-ppt/) | **Walrus's final PDF**, the deck script, the diagram prompts and the brand notes |
+| [`model/`](model/) | Kestrel's trained AI, its score, its training graphs |
+| [`tools/`](tools/) | Kestrel's flight script |
 | [`given/`](given/) | official SIH files — all 229 problem statements, the rules, the template |
 | [`docs-dataset.md`](docs-dataset.md) | how we scraped the 229 problem statements |
 
@@ -144,5 +183,7 @@ All four free. Nothing estimated. Every number on the slides came from one of th
 
 ## Still to do
 
-- [ ] Upload the PDF to the SIH portal (Team Leader only)
-- [ ] Check the portal's file size limit — ours is 10 MB, can be made smaller if needed
+- [ ] Upload both PDFs to the SIH portal (Team Leader only)
+- [ ] Confirm the team name shown on the Walrus title slide
+- [ ] Walrus product page goes live, and add the GitHub repo link to slide 6
+- [ ] Check the portal's file-size limit — Kestrel is 10 MB, Walrus is 11 MB, both can be made smaller if needed
